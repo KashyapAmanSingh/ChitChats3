@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376024489740",
+    "project_id": "chatnative3",
+    "storage_bucket": "chatnative3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376024489740:android:2e6b27d2ea4261a7383329",
+        "android_client_info": {
+          "package_name": "com.chitchats3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo6orwmAbH441ipZNNBtSHHtGR-wSNTpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
