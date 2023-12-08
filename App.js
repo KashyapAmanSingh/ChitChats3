@@ -6,112 +6,109 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
   View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Alert,
+  Button,
 } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Home from './src/Home';
+import SignInForm from './src/SignIn';
+import SignUpForm from './src/SinUp';
+import UserLists from './src/UserLists/UserLists';
+import {signOut} from './src/firebaseFns';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const Stack = createNativeStackNavigator();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          title: 'Users ',
+          headerStyle: {
+            backgroundColor: 'wheat',
           },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
+          headerTitleStyle: {
+            fontSize: 30,
           },
-        ]}>
-        {children}
-      </Text>
-    </View>
+          headerTintColor: 'white',
+        }}>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerStyle: {
+              backgroundColor: 'wheat',
+            },
+            title: 'Users Home',
+            headerTitleStyle: {fontSize: 30},
+            headerTintColor: 'white',
+          }}
+        />
+        <Stack.Screen
+          name="SignInForm"
+          component={SignInForm}
+          options={{title: 'Sign In Form'}}
+        />
+        <Stack.Screen
+          name="SignUpForm"
+          component={SignUpForm}
+          options={{
+            title: 'Users SignUpForm',
+            // headerRight: () => <Button onPress={signOut} title="signOut" />,
+          }}
+        />
+
+        <Stack.Screen
+          name="UserLists"
+          component={UserLists}
+          options={{
+            title: 'Users UserLists',
+            headerRight: () => <Button onPress={signOut} title="signOut" />,
+          }}
+        />
+      </Stack.Navigator>
+
+      {/* Additional UI components can be rendered outside of the navigator */}
+      {/* <TouchableOpacity style={styles.button}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>
+          Click TO go on signIn Form
+        </Text>
+      </TouchableOpacity> */}
+    </NavigationContainer>
   );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  button: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 4,
+    backgroundColor: 'red',
+    marginHorizontal: '1%',
+    marginBottom: 6,
+    minWidth: '48%',
+    height: 40,
+    textAlign: 'center',
+    alignSelf: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  SignInFormText: {
+    textShadowColor: 'blue',
+    color: 'blue',
   },
 });
 
