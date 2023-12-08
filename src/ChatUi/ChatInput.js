@@ -7,13 +7,22 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {createMessage} from '../firebaseFns';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 
-const ChatInput = ({onSendMessage}) => {
+
+const ChatInput = ({senderId, receiverId}) => {
   const [message, setMessage] = useState('');
 
   const handleSend = () => {
     if (message.trim() !== '') {
-      onSendMessage(message);
+      const ChatId = `${senderId.split('').sort().join('')}${receiverId
+        .split('')
+        .sort()
+        .join('')}`;
+        const uuid = uuidv4();
+      createMessage(uuid,message, ChatId, senderId, receiverId);
       setMessage(''); // Clear the input after sending
     }
   };

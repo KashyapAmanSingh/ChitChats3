@@ -95,5 +95,28 @@ export const ReadCollections = async collectionName => {
   const userId = users.docs.map(doc => doc.id);
   return {userList, userId};
 };
+export const createMessage = async (uuid, message, ChatId, senderId, receiverId) => {
+  
+  try {
+    // Access the Firestore database
+    const db = firestore();
+
+     const userRef = await db.collection('messages').doc(ChatId).collection('MessageLists').doc(uuid).set({
+
+      ChatId: uuid,
+      message: message,
+      senderId: senderId,
+      receiverId: receiverId,
+      createdAt: new Date(),
+    });
+
+ 
+    return userRef.id;  
+  } catch (error) {
+    console.error('Error creating user: ', error);
+    throw error; // Rethrow the error to handle it at the calling location
+  }
+};
+
 
 export default createUser;

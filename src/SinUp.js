@@ -23,13 +23,6 @@ const SignUpForm = props => {
   const [name, setName] = useState('');
 
   const handleSignUp = async () => {
-    console.log('SignUp button pressed'); // Add this line
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Confirm Password:', confirmPassword);
-    console.log(
-      'Before   uuid =========================------------------------------============:',
-    );
     if (confirmPassword !== password)
       return Alert.alert('Please enter correct your password');
 
