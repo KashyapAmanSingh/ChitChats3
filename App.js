@@ -22,7 +22,8 @@ import SignInForm from './src/SignIn';
 import SignUpForm from './src/SinUp';
 import UserLists from './src/UserLists/UserLists';
 import {signOut} from './src/firebaseFns';
-
+import ChatUI from './src/ChatUi/ChatUi';
+ 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
             headerStyle: {
               backgroundColor: 'wheat',
             },
+            headerRight: () => <Button onPress={signOut} title="signOut" />,
             title: 'Users Home',
             headerTitleStyle: {fontSize: 30},
             headerTintColor: 'white',
@@ -72,6 +74,14 @@ const App = () => {
           options={{
             title: 'Users UserLists',
             headerRight: () => <Button onPress={signOut} title="signOut" />,
+          }}
+        />
+
+        <Stack.Screen
+          name="ChatUI"
+          component={ChatUI}
+          options={{
+            title: 'ChatUI',
           }}
         />
       </Stack.Navigator>

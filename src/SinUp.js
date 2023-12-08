@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 import {
   View,
   Text,
@@ -9,21 +11,38 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import {signUpfn} from './firebaseFns';
+import createUser, {signUpfn} from './firebaseFns';
 
 const SignUpForm = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const [name, setName] = useState('');
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     console.log('SignUp button pressed'); // Add this line
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Confirm Password:', confirmPassword);
-    signUpfn(email, password);
+    console.log(
+      'Before   uuid =========================------------------------------============:',
+    );
+    if (confirmPassword !== password)
+      return Alert.alert('Please enter correct your password');
+
+    const uuid = uuidv4();
+    const userId = await signUpfn(email, password);
+    const collectionDocsName = userId;
+    await createUser(collectionDocsName, uuid, name, email, phone, password);
+    setEmail('');
+    setPassword('');
+    setPhone('');
+    setConfirmPassword('');
+    setName('');
+    props.navigation.navigate('SignInForm');
   };
 
   return (
@@ -47,6 +66,16 @@ const SignUpForm = props => {
           autoCorrect={true}
           onChangeText={text => setEmail(text)}
           value={email}
+        />
+        <TextInput
+          style={styles.input}
+          label="Enter Phone Number"
+          placeholder="Enter Phone Number"
+          secureTextEntry={true}
+          autoCorrect={true}
+          numberOfLines={4}
+          onChangeText={text => setPhone(text)}
+          value={phone}
         />
         <TextInput
           style={styles.input}
@@ -87,7 +116,6 @@ const SignUpForm = props => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

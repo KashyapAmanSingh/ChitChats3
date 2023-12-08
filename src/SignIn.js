@@ -10,18 +10,24 @@ import {
   Alert,
 } from 'react-native';
 import {signInfn} from './firebaseFns';
+import {storeId} from './AsyncStorageUtility/AsyncUtility';
 
 const SignInForm = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log(
-    props,
-    'props  SignInForm  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~----pressed',
-  ); // Add this line
-  const handleSignIn = () => {
-    console.log('Email:', email);
-    console.log('Password:', password);
-    signInfn(email, password);
+  const handleSignIn = async () => {
+    try {
+      const id = await signInfn(email, password);
+
+      // Log the user ID here to check if it's correctly resolved
+      console.log('User ID:💽💽💽💽💽💽💽💽💽💽💽💽💽💽💽💽', id);
+      storeId('UserId', id);
+      // Navigate to the Home screen
+      props.navigation.navigate('Home');
+    } catch (error) {
+      // Handle errors if needed
+      console.error('Error during sign in:', error);
+    }
   };
 
   return (

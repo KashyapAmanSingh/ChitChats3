@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {signOut} from './firebaseFns';
 import auth from '@react-native-firebase/auth';
-import SignInForm from './SignIn';
+import UserLists from './UserLists/UserLists';
 const Home = props => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
@@ -22,30 +21,36 @@ const Home = props => {
 
   if (initializing) return null;
 
-  //   if (!user) {
-  //     return (
-  //       <View>
-  //         {/* <SignUpForm /> */}
-  //         <SignInForm />
-  //       </View>
-  //     );
-  //   }
+  // if (!user) {
+  //   return (
+  //     <View>
+  //       {/* <SignUpForm /> */}
+  // <UserLists />
+  //     </View>
+  //   );
+  // }
   return (
     <View style={styles.HomeContainer}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => props.navigation.navigate('SignUpForm')}>
-        <Text style={[styles.buttonText, styles.SignInFormText]}>
-          SignUpForm
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => props.navigation.navigate('SignInForm')}>
-        <Text style={[styles.buttonText, styles.SignInFormText]}>
-          Click TO go on signIn Form
-        </Text>
-      </TouchableOpacity>
+      {!user ? (
+        <>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => props.navigation.navigate('SignUpForm')}>
+            <Text style={[styles.buttonText, styles.SignInFormText]}>
+              SignUpForm
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => props.navigation.navigate('SignInForm')}>
+            <Text style={[styles.buttonText, styles.SignInFormText]}>
+              Sign In
+            </Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <UserLists />
+      )}
     </View>
   );
 };
@@ -66,7 +71,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 4,
     backgroundColor: 'red',
-
+    marginVertical: 24,
     marginHorizontal: '1%',
     marginBottom: 6,
     minWidth: '48%',

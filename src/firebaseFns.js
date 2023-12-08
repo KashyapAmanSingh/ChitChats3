@@ -1,23 +1,33 @@
 /* eslint-disable prettier/prettier */
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import {Alert} from 'react-native';
+import {storeId} from './AsyncStorageUtility/AsyncUtility';
 
-export const signUpfn = (email, password) => {
-  auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      console.log('User account created & signed in!');
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
+const usersCollection = firestore().collection('Users');
 
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
+export const signUpfn = async (email, password) => {
+  try {
+    const userCredential = await auth().createUserWithEmailAndPassword(
+      email,
+      password,
+    );
 
-      console.error(error);
-    });
+    console.log('User account created & signed in!');
+
+    const user = userCredential.user;
+
+    return user.uid;
+  } catch (error) {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    } else if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+
+    console.error(error);
+    throw error; // Rethrow the error to handle it at the calling location
+  }
 };
 
 export const signOut = () => {
@@ -26,22 +36,66 @@ export const signOut = () => {
     .then(() => console.log('User signed out!'));
 };
 
-export const signInfn = (email, password) => {
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('User account created & signed in!');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-  
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-  
-        console.error(error);
-      });
-  };
+export const signInfn = async (email, password) => {
+  try {
+    const userCredential = await auth().signInWithEmailAndPassword(email, password);
+    const user = userCredential.user;
  
+    return user.uid;
+  } catch (error) {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    }
+
+    if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+
+    console.error(error);
+    throw error; // Rethrow the error to handle it at the calling location
+  }
+};
+
+export const createUser = async (
+  collectionDocsName,
+  uuid,
+  name,
+  email,
+  phone,
+) => {
+  try {
+    // Access the Firestore database
+    const db = firestore();
+
+    // Add a new document with the specified ID
+    const userRef = await db.collection('users').doc(collectionDocsName).set({
+      id: uuid,
+      name: name,
+      phone: phone,
+      email: email,
+    });
+
+    console.log('User added with ID: ', collectionDocsName);
+
+    return collectionDocsName; // Return the specified document ID
+  } catch (error) {
+    console.error('Error creating user: ', error);
+    throw error; // Rethrow the error to handle it at the calling location
+  }
+};
+
+export const ReadCollections = async collectionName => {
+  const users = await firestore().collection(collectionName).get();
+  // const user = await firestore().collection('Users').doc('ABC').get();
+
+  const userList = users.docs.map(doc => doc.data());
+  // const userId = users.docs.map(doc => doc.id);
+
+  // console.log(
+  //   userId,
+  //   '------------------------------------- ',
+  // );
+  return userList;
+};
+
+export default createUser;
