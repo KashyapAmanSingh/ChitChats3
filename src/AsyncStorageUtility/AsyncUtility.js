@@ -1,20 +1,25 @@
 /* eslint-disable prettier/prettier */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const storeId = async (key, id) => {
+export const storeId = async ({key, id}) => {
+ 
   try {
     await AsyncStorage.setItem(key, id);
+ 
   } catch (error) {
     console.error('Error storing id:', error);
   }
 };
 
 export const getId = async key => {
+ 
   try {
+ 
     const id = await AsyncStorage.getItem(key);
     if (id !== null) {
-      console.log('Id retrieved successfully:', id);
-      return id;
+      console.log('Id retrieved successfully:', id,id.split('').sort().join(''));
+
+      return id.split('').sort().join('');
     } else {
       console.log('No id found for key:', key);
       return null;

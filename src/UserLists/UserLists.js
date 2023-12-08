@@ -1,15 +1,25 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Button,
+} from 'react-native';
 import {ReadCollections, signOut} from '../firebaseFns';
-import UserListItem from './UserSliceUi';
+import {getId} from '../AsyncStorageUtility/AsyncUtility';
+import UserSliceUi from './UserSliceUi';
 
 const UserLists = () => {
   const [userList, setUserList] = useState([]);
+  const [userIds, setUserIds] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await ReadCollections('users');
+      const {userList: users, userId} = await ReadCollections('users');
       setUserList(users);
+      setUserIds(userId);
     };
 
     fetchUsers();
@@ -20,15 +30,15 @@ const UserLists = () => {
       <FlatList
         data={userList}
         keyExtractor={user => user.id}
-        renderItem={({item}) => <UserListItem user={item} />}
+        renderItem={({item, index}) => (
+          <UserSliceUi user={item} userIds={userIds} index={index} />
+        )}
       />
-
-      {/* <View>
-        <TouchableOpacity style={styles.button}>
-          onPress={signOut}
-          <Text style={styles.buttonText}>Sign out button</Text>
+      <View>
+        <TouchableOpacity style={styles.button} onPress={() => getId('UserId')}>
+          <Text style={styles.buttonText}>UserId </Text>
         </TouchableOpacity>
-      </View> */}
+      </View>
     </View>
   );
 };

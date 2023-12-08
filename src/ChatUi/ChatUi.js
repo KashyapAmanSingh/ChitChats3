@@ -1,25 +1,24 @@
 /* eslint-disable prettier/prettier */
 import {Alert, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import {useRoute} from '@react-navigation/native';
-import ChatInput from './ChatInput';
+import React, {useEffect, useState} from 'react';
+ import ChatInput from './ChatInput';
+import  {getId} from '../AsyncStorageUtility/AsyncUtility';
 
-const ChatUI = () => {
-  const route = useRoute();
-  const userId = route.params.userId;
+const ChatUi = ({route}) => {
+  const [receiverId, setReceiverId] = useState(null);
+  const [senderId, setSenderId] = useState(null);
 
-  Alert.alert(userId);
+  useEffect(() => {
+    const fetchData = async () => {
+      const id = await getId('UserId');
+      const userId = route.params.userId;
+      setReceiverId(userId.split('').sort().join(''));
+      setSenderId(id);
+    };
 
-  // Split the UUID string into an array of hexadecimal values
-  const receiverId = userId.split('-').join('').split('').sort().join('');
+    fetchData();
+  }, []);
 
-  //    const sortedUuid = `${sortedHex.substr(0, 8)}-${sortedHex.substr(8, 4)}-${sortedHex.substr(12, 4)}-${sortedHex.substr(16, 4)}-${sortedHex.substr(20)}`;
-  Alert.alert(receiverId);
-
-  console.log(
-    '----------------------------------------------------------',
-    receiverId,
-  );
   return (
     <View>
       <Text>ChatUI</Text>
@@ -29,6 +28,6 @@ const ChatUI = () => {
   );
 };
 
-export default ChatUI;
+export default ChatUi;
 
 const styles = StyleSheet.create({});

@@ -1,19 +1,23 @@
 /* eslint-disable prettier/prettier */
+import {
+  Alert,
+  Image,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
-import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-
 import {useNavigation} from '@react-navigation/native';
 
-const UserListItem = ({user}) => {
+const UserSliceUi = ({user, userIds, index}) => {
   const navigation = useNavigation();
-
-  const handlePress = () => {
-    // Navigate to ChatUI and send item.id
-    navigation.navigate('ChatUI', {userId: user.id});
+  const handleRouteSend = () => {
+    navigation.navigate('ChatUI', {userId: userIds[index]});
   };
-
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity onPress={handleRouteSend}>
       <View style={styles.userItem}>
         <View style={styles.iconContainer}>
           <Image source={require('../assets/ProfileIcon.gif')} />
@@ -23,6 +27,8 @@ const UserListItem = ({user}) => {
     </TouchableOpacity>
   );
 };
+
+export default UserSliceUi;
 
 const styles = StyleSheet.create({
   userItem: {
@@ -51,5 +57,3 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 });
-
-export default UserListItem;

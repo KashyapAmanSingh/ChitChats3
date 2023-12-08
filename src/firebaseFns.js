@@ -38,9 +38,12 @@ export const signOut = () => {
 
 export const signInfn = async (email, password) => {
   try {
-    const userCredential = await auth().signInWithEmailAndPassword(email, password);
+    const userCredential = await auth().signInWithEmailAndPassword(
+      email,
+      password,
+    );
     const user = userCredential.user;
- 
+
     return user.uid;
   } catch (error) {
     if (error.code === 'auth/email-already-in-use') {
@@ -89,13 +92,8 @@ export const ReadCollections = async collectionName => {
   // const user = await firestore().collection('Users').doc('ABC').get();
 
   const userList = users.docs.map(doc => doc.data());
-  // const userId = users.docs.map(doc => doc.id);
-
-  // console.log(
-  //   userId,
-  //   '------------------------------------- ',
-  // );
-  return userList;
+  const userId = users.docs.map(doc => doc.id);
+  return {userList, userId};
 };
 
 export default createUser;

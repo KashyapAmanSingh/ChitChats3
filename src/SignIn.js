@@ -19,10 +19,8 @@ const SignInForm = props => {
     try {
       const id = await signInfn(email, password);
 
-      // Log the user ID here to check if it's correctly resolved
-      console.log('User ID:💽💽💽💽💽💽💽💽💽💽💽💽💽💽💽💽', id);
       storeId('UserId', id);
-      // Navigate to the Home screen
+
       props.navigation.navigate('Home');
     } catch (error) {
       // Handle errors if needed
