@@ -21,14 +21,6 @@ const Home = props => {
 
   if (initializing) return null;
 
-  // if (!user) {
-  //   return (
-  //     <View>
-  //       {/* <SignUpForm /> */}
-  // <UserLists />
-  //     </View>
-  //   );
-  // }
   return (
     <View style={styles.HomeContainer}>
       {!user ? (

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {getId, storeId} from '../AsyncStorageUtility/AsyncUtility';
 
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 80,
     width: '100%',
- 
+
     marginBottom: 0,
   },
   iconContainer: {

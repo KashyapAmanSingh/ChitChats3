@@ -3,7 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const storeId = async ({key, id}) => {
   try {
-    await AsyncStorage.setItem(key, id);
+    if (id && key) {
+      await AsyncStorage.setItem(key, id);
+    }
   } catch (error) {
     console.error('Error storing id:', error);
   }
@@ -22,6 +24,15 @@ export const getId = async key => {
     }
   } catch (error) {
     console.error('Error retrieving id:', error);
+    return null;
+  }
+};
+export const removeId = async key => {
+  try {
+    await AsyncStorage.removeItem(key);
+    console.log('Id removeItem successfully:');
+  } catch (error) {
+    console.error('Error removeItem id:', error);
     return null;
   }
 };

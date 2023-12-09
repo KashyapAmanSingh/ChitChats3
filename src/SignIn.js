@@ -17,9 +17,8 @@ const SignInForm = props => {
   const [password, setPassword] = useState('');
   const handleSignIn = async () => {
     try {
-      const id = await signInfn(email, password);
-
-      storeId('UserId', id);
+      const SecurityId = await signInfn(email, password);
+      storeId({key: 'UserId', id: SecurityId});
 
       props.navigation.navigate('Home');
     } catch (error) {
@@ -34,6 +33,7 @@ const SignInForm = props => {
         <TextInput
           style={styles.input}
           label="Email"
+          placeholderTextColor="#474FB6"
           placeholder="Enter your email"
           onChangeText={text => setEmail(text)}
           value={email}
@@ -41,13 +41,13 @@ const SignInForm = props => {
         <TextInput
           style={styles.input}
           label="Password"
+          placeholderTextColor="#474FB6"
           placeholder="Enter your password"
           secureTextEntry
           onChangeText={text => setPassword(text)}
           value={password}
         />
       </View>
-
       <View style={styles.Buttoncontainer}>
         <View>
           <TouchableOpacity style={styles.button} onPress={handleSignIn}>
@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   input: {
+    color: 'red',
+
     height: 40,
     borderColor: 'black',
     borderWidth: 2,

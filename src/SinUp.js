@@ -46,6 +46,7 @@ const SignUpForm = props => {
           label="Name"
           placeholder="Your NAME"
           secureTextEntry
+          placeholderTextColor="#474FB6"
           autoCapitalize="words"
           autoCorrect={true}
           numberOfLines={4}
@@ -56,6 +57,7 @@ const SignUpForm = props => {
           style={styles.input}
           label="Email"
           placeholder="Enter your email"
+          placeholderTextColor="#474FB6"
           autoCorrect={true}
           onChangeText={text => setEmail(text)}
           value={email}
@@ -65,6 +67,7 @@ const SignUpForm = props => {
           label="Enter Phone Number"
           placeholder="Enter Phone Number"
           secureTextEntry={true}
+          placeholderTextColor="#474FB6"
           autoCorrect={true}
           numberOfLines={4}
           onChangeText={text => setPhone(text)}
@@ -75,6 +78,7 @@ const SignUpForm = props => {
           label="Password"
           placeholder="Enter your password"
           secureTextEntry={true}
+          placeholderTextColor="#474FB6"
           autoCorrect={true}
           numberOfLines={4}
           onChangeText={text => setPassword(text)}
@@ -85,6 +89,7 @@ const SignUpForm = props => {
           label="Confirm Password"
           placeholder="Confirm your password"
           secureTextEntry={true}
+          placeholderTextColor="#474FB6"
           autoCorrect={true}
           numberOfLines={4}
           onChangeText={text => setConfirmPassword(text)}
@@ -122,6 +127,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'black',
     borderWidth: 2,
+    color: '#474FB6',
     marginBottom: 15,
     paddingHorizontal: 10,
     borderRadius: 5,

@@ -2,7 +2,7 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {Alert} from 'react-native';
-import {storeId} from './AsyncStorageUtility/AsyncUtility';
+import {removeId, storeId} from './AsyncStorageUtility/AsyncUtility';
 import {onSnapshot} from 'firebase/firestore';
 
 export const signUpfn = async (email, password) => {
@@ -33,6 +33,7 @@ export const signOut = () => {
   auth()
     .signOut()
     .then(() => console.log('User signed out!'));
+  removeId('UserId');
 };
 
 export const signInfn = async (email, password) => {
@@ -155,7 +156,7 @@ export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
           realTimeChat.push(documentSnapshot.data());
         });
       });
- 
+
     getChatMessage(realTimeChat);
   } catch (error) {
     console.error('Error while getting messages:', error);
