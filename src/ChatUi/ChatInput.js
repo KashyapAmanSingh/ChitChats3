@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import {v4 as uuidv4} from 'uuid';
 const ChatInput = ({senderId, receiverId}) => {
   const [message, setMessage] = useState('');
   const [getmessage, getChatMessage] = useState([]);
+  const [countMessage, setcountMessage] = useState(0);
   const ChatId = `${senderId}${receiverId}`.split('').sort().join('');
   const handleSend = () => {
     if (message.trim() !== '') {
@@ -22,10 +23,12 @@ const ChatInput = ({senderId, receiverId}) => {
       createMessage(uuid, message, ChatId, senderId, receiverId);
       setMessage(''); // Clear the input after sending
     }
+    setcountMessage(countMessage+1);
     ChatId && ChatId.length >= 50
       ? getMessagesRealTime(ChatId, getChatMessage)
       : null;
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.chatsLists}>
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
   ChatMessage: {
     fontSize: 25,
     fontWeight: 'bold',
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     marginVertical: 1,
     flexWrap: 'wrap',
     // width: 190,
@@ -97,7 +100,7 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 10,
     paddingHorizontal: 15,
-    color: 'black',
+    color: '#474FB6',
   },
   ChatMessageSender: {
     alignSelf: 'flex-end',
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     width: '73%',
   },
   sendButton: {
-    backgroundColor: 'purple',
+    backgroundColor: '#474FB6',
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 16,

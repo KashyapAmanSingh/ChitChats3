@@ -11,17 +11,22 @@ import {
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
-const UserSliceUi = ({user, userIds, index}) => {
+const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
   const handleRouteSend = () => {
     navigation.navigate('ChatUI', {userId: userIds[index]});
   };
+
+  const personalProfileIndex = userIds.indexOf(personalIds);
+  if (personalProfileIndex === index) return;
+
   return (
     <TouchableOpacity onPress={handleRouteSend}>
       <View style={styles.userItem}>
         <View style={styles.iconContainer}>
           <Image source={require('../assets/ProfileIcon.gif')} />
         </View>
+
         <Text style={styles.userItemText}>{user.name}</Text>
       </View>
     </TouchableOpacity>
@@ -41,9 +46,9 @@ const styles = StyleSheet.create({
     borderTopColor: 'black',
     borderTopWidth: 1,
     backgroundColor: 'white',
-    height: 70,
+    height: 80,
     width: '100%',
-
+ 
     marginBottom: 0,
   },
   iconContainer: {

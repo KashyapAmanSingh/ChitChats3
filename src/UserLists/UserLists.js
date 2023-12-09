@@ -1,25 +1,21 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Button,
-} from 'react-native';
-import {ReadCollections, signOut} from '../firebaseFns';
+import {View, StyleSheet, FlatList} from 'react-native';
+import {ReadCollections} from '../firebaseFns';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 
 const UserLists = () => {
   const [userList, setUserList] = useState([]);
   const [userIds, setUserIds] = useState([]);
+  const [personalIds, setPersonalIds] = useState('');
   useEffect(() => {
     const fetchUsers = async () => {
       const {userList: users, userId} = await ReadCollections('users');
       setUserList(users);
       setUserIds(userId);
+      const UserId = await getId('UserId');
+      setPersonalIds(UserId);
     };
 
     fetchUsers();
@@ -31,14 +27,14 @@ const UserLists = () => {
         data={userList}
         keyExtractor={user => user.id}
         renderItem={({item, index}) => (
-          <UserSliceUi user={item} userIds={userIds} index={index} />
+          <UserSliceUi
+            user={item}
+            userIds={userIds}
+            index={index}
+            personalIds={personalIds}
+          />
         )}
       />
-      <View>
-        <TouchableOpacity style={styles.button} onPress={() => getId('UserId')}>
-          <Text style={styles.buttonText}>UserId </Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -47,28 +43,10 @@ const styles = StyleSheet.create({
   UserListsUi: {
     flex: 1,
     backgroundColor: 'white',
-    marginTop: 30,
+    marginTop: 1,
+    flexWrap: 'wrap',
   },
-  button: {
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 4,
-    backgroundColor: 'red',
 
-    marginHorizontal: '1%',
-    marginBottom: 6,
-    minWidth: '48%',
-    height: 40,
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
   userItem: {
     padding: 16,
     borderBottomWidth: 1,

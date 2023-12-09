@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import {Alert, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ChatInput from './ChatInput';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
@@ -18,11 +17,9 @@ const ChatUi = ({route}) => {
     };
 
     fetchData();
-  }, []);
+  }, [route.params.userId]);
 
   return <ChatInput receiverId={receiverId} senderId={senderId} />;
 };
 
 export default ChatUi;
-
-const styles = StyleSheet.create({});
