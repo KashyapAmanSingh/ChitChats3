@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {Alert} from 'react-native';
 import {storeId} from './AsyncStorageUtility/AsyncUtility';
+import {onSnapshot} from 'firebase/firestore';
 
 export const signUpfn = async (email, password) => {
   try {
@@ -116,12 +117,73 @@ export const createMessage = async (
         receiverId: receiverId,
         createdAt: new Date(),
       });
-
-    return userRef.id;
   } catch (error) {
     console.error('Error creating user: ', error);
     throw error; // Rethrow the error to handle it at the calling location
   }
 };
+
+export const getMessages = async ChatId => {
+  const ChattingId = await ChatId;
+
+  try {
+    const messages = await firestore()
+      .collection('messages')
+      .doc(ChattingId)
+      .collection('MessageLists')
+      .get();
+    const messagesList = messages.docs.map(doc => doc.data());
+    console.log('Message data:😊😊😊😊😊        messageData', messagesList);
+
+    return messagesList;
+  } catch {
+    console.log('Error while getting messages😊');
+  }
+};
+
+export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
+  try {
+    firestore()
+      .collection('messages')
+      .doc(ChattingId)
+      .collection('MessageLists')
+      .onSnapshot(documentSnapshots => {
+        documentSnapshots.forEach(documentSnapshot => {
+          getChatMessage(documentSnapshot.data());
+        });
+      });
+  } catch (error) {
+    console.error('Error while getting messages:', error);
+  }
+};
+
+// export const getMessages = async ChatId => {
+//    try {
+//     const db = firestore();
+
+//     // Reference to the specific document
+//     const messageRef = db
+//       .collection('messages')
+//       .doc(ChatId)
+//       .collection('MessageLists');
+
+//     // Get the document snapshot
+//     const docSnapshot = await messageRef.get();
+
+//     // Check if the document exists
+//     if (docSnapshot.exists) {
+//       // Access the data within the document
+//       const messageData = docSnapshot.data();
+//       console.log('Message data:😊😊😊😊😊        messageData', messageData);
+//       return messageData;
+//     } else {
+//       console.log('Document does not exist');
+//       return null;
+//     }
+//   } catch (error) {
+//     console.error('Error getting message:', error);
+//     throw error;
+//   }
+// };
 
 export default createUser;

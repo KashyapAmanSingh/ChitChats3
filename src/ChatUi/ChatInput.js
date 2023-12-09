@@ -7,26 +7,26 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import {createMessage} from '../firebaseFns';
+import {createMessage, getMessagesRealTime} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
-
+import ShowMessageUi from '../UserLists/GetUsers';
 
 const ChatInput = ({senderId, receiverId}) => {
   const [message, setMessage] = useState('');
-
+  const [getmessage, getChatMessage] = useState('');
+  const ChatId = `${senderId}${receiverId}`.split('').sort().join('');
   const handleSend = () => {
     if (message.trim() !== '') {
-      const ChatId = `${senderId.split('').sort().join('')}${receiverId
-        .split('')
-        .sort()
-        .join('')}`;
-        const uuid = uuidv4();
-      createMessage(uuid,message, ChatId, senderId, receiverId);
+      const uuid = uuidv4();
+      createMessage(uuid, message, ChatId, senderId, receiverId);
       setMessage(''); // Clear the input after sending
     }
+    ChatId && ChatId.length >= 50
+      ? getMessagesRealTime(ChatId, getChatMessage)
+      : null;
   };
-
+ 
   return (
     <View style={styles.container}>
       <TextInput
@@ -39,6 +39,7 @@ const ChatInput = ({senderId, receiverId}) => {
       <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
         <Text style={styles.sendButtonText}>Send</Text>
       </TouchableOpacity>
+      {/* <ShowMessageUi ChatId={ChatId} /> */}
     </View>
   );
 };

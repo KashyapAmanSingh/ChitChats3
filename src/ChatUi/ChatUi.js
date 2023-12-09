@@ -3,7 +3,7 @@ import {Alert, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ChatInput from './ChatInput';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
-
+ 
 const ChatUi = ({route}) => {
   const [receiverId, setReceiverId] = useState(null);
   const [senderId, setSenderId] = useState(null);
@@ -14,16 +14,16 @@ const ChatUi = ({route}) => {
       // const senderId=id.split('').sort().join('')
       const receiverrouteId = route.params.userId;
       setReceiverId(receiverrouteId);
-      id && setSenderId(id);
-      
+      id && id ? setSenderId(id):null
     };
 
     fetchData();
   }, []);
+
   return (
     <View>
       <Text>ChatUI</Text>
-      {/* Assuming ChatInput is a component you've created */}
+
       <ChatInput receiverId={receiverId} senderId={senderId} />
     </View>
   );
