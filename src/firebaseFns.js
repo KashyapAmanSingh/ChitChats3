@@ -102,6 +102,11 @@ export const createMessage = async (
   senderId,
   receiverId,
 ) => {
+  console.log(
+    '🚃🚃🚃🚃🚃🚃🚃🚃🚃🚃🚃🚃🚃 In the CreateMessage firenase',
+    ChatId,
+  );
+
   try {
     // Access the Firestore database
     const db = firestore();
@@ -124,72 +129,46 @@ export const createMessage = async (
   }
 };
 
-// export const getMessages = async ChatId => {
-//   const ChattingId = await ChatId;
+export const getMessages = async ChatId => {
+  const ChattingId = await ChatId;
 
-//   try {
-//     const messages = await firestore()
-//       .collection('messages')
-//       .doc(ChattingId)
-//       .collection('MessageLists')
-//       .get();
-//     const messagesList = messages.docs.map(doc => doc.data());
-//     console.log('Message data:😊😊😊😊😊        messageData', messagesList);
-
-//     return messagesList;
-//   } catch {
-//     console.log('Error while getting messages😊');
-//   }
-// };
-
-//RealTime Messaging
-
-let realTimeChat = [];
-export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
   try {
-    firestore()
+    const messages = await firestore()
       .collection('messages')
       .doc(ChattingId)
       .collection('MessageLists')
-      .onSnapshot(documentSnapshots => {
-        documentSnapshots.forEach(documentSnapshot => {
-          realTimeChat.push(documentSnapshot.data());
+      .orderBy('createdAt')
+      .get();
+    const messagesList = messages.docs.map(doc => doc.data());
+    console.log('Message data:😊😊😊😊😊        messageData', messagesList);
+    return messagesList;
+  } catch {
+    console.log('Error while getting messages😊');
+  }
+};
+
+//RealTime Messaging
+
+export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
+  console.log('🚲 🚲🚲🚲🚲🚲 step 1 after realtime chat datas');
+
+  try {
+    const subscriber = firestore()
+      .collection('messages')
+      .doc(ChattingId)
+      .collection('MessageLists')
+      .orderBy('createdAt')
+      .onSnapshot(querysnapshot => {
+        const allmessages = querysnapshot.docs.map(item => {
+          return {...item._data, createdAt: item._data.createdAt};
         });
+        getChatMessage(allmessages);
       });
 
-    getChatMessage(realTimeChat);
+    console.log('🚲 🚲🚲🚲 step 2  after realtime chat datas');
   } catch (error) {
     console.error('Error while getting messages:', error);
   }
 };
-
-// export const getMessages = async ChatId => {
-//    try {
-//     const db = firestore();
-
-//     // Reference to the specific document
-//     const messageRef = db
-//       .collection('messages')
-//       .doc(ChatId)
-//       .collection('MessageLists');
-
-//     // Get the document snapshot
-//     const docSnapshot = await messageRef.get();
-
-//     // Check if the document exists
-//     if (docSnapshot.exists) {
-//       // Access the data within the document
-//       const messageData = docSnapshot.data();
-//       console.log('Message data:😊😊😊😊😊        messageData', messageData);
-//       return messageData;
-//     } else {
-//       console.log('Document does not exist');
-//       return null;
-//     }
-//   } catch (error) {
-//     console.error('Error getting message:', error);
-//     throw error;
-//   }
-// };
 
 export default createUser;

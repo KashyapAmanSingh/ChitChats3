@@ -12,23 +12,18 @@ import {createMessage, getMessagesRealTime} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 
-const ChatInput = ({senderId, receiverId}) => {
+const ChatInput = ({senderId, receiverId, ChatId,getmessage}) => {
   const [message, setMessage] = useState('');
-  const [getmessage, getChatMessage] = useState([]);
   const [countMessage, setcountMessage] = useState(0);
-  const ChatId = `${senderId}${receiverId}`.split('').sort().join('');
+ 
   const handleSend = () => {
-    if (message.trim() !== '') {
+    if (message.trim() !== '' && message && message) {
       const uuid = uuidv4();
       createMessage(uuid, message, ChatId, senderId, receiverId);
       setMessage(''); // Clear the input after sending
     }
-    setcountMessage(countMessage+1);
-    ChatId && ChatId.length >= 50
-      ? getMessagesRealTime(ChatId, getChatMessage)
-      : null;
+    setcountMessage(countMessage + 1);
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.chatsLists}>
@@ -49,7 +44,7 @@ const ChatInput = ({senderId, receiverId}) => {
                 )}
               </View>
             )}
-            keyExtractor={item => item.id}
+            keyExtractor={(item, index) => index.toString()}
           />
         )}
       </View>

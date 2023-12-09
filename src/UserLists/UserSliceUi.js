@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {getId, storeId} from '../AsyncStorageUtility/AsyncUtility';
 
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
   const handleRouteSend = () => {
     navigation.navigate('ChatUI', {userId: userIds[index]});
+    // Alert.alert('UserSlice', userIds[index]);
   };
 
   const personalProfileIndex = userIds.indexOf(personalIds);
