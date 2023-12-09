@@ -123,24 +123,27 @@ export const createMessage = async (
   }
 };
 
-export const getMessages = async ChatId => {
-  const ChattingId = await ChatId;
+// export const getMessages = async ChatId => {
+//   const ChattingId = await ChatId;
 
-  try {
-    const messages = await firestore()
-      .collection('messages')
-      .doc(ChattingId)
-      .collection('MessageLists')
-      .get();
-    const messagesList = messages.docs.map(doc => doc.data());
-    console.log('Message data:😊😊😊😊😊        messageData', messagesList);
+//   try {
+//     const messages = await firestore()
+//       .collection('messages')
+//       .doc(ChattingId)
+//       .collection('MessageLists')
+//       .get();
+//     const messagesList = messages.docs.map(doc => doc.data());
+//     console.log('Message data:😊😊😊😊😊        messageData', messagesList);
 
-    return messagesList;
-  } catch {
-    console.log('Error while getting messages😊');
-  }
-};
+//     return messagesList;
+//   } catch {
+//     console.log('Error while getting messages😊');
+//   }
+// };
 
+//RealTime Messaging
+
+let realTimeChat = [];
 export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
   try {
     firestore()
@@ -149,9 +152,11 @@ export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
       .collection('MessageLists')
       .onSnapshot(documentSnapshots => {
         documentSnapshots.forEach(documentSnapshot => {
-          getChatMessage(documentSnapshot.data());
+          realTimeChat.push(documentSnapshot.data());
         });
       });
+ 
+    getChatMessage(realTimeChat);
   } catch (error) {
     console.error('Error while getting messages:', error);
   }
