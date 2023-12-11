@@ -3,6 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import UserLists from './UserLists/UserLists';
+import ZegoCall from './VideoCall/ZegoCall';
 const Home = props => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
@@ -42,6 +43,7 @@ const Home = props => {
         </>
       ) : (
         <UserLists />
+        // <ZegoCall/>
       )}
     </View>
   );

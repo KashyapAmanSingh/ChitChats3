@@ -47,20 +47,3 @@ const ChatUi = ({route}) => {
 };
 
 export default ChatUi;
-
-// use for reading chat but not real time
-// useEffect(() => {
-//   const fetchData = async () => {
-//     setIsLoading(true); // Set loading to true before fetching
-
-//     if (ChatId && ChatId.length >= 50) {
-//       getChatMessage('');
-//       const unsubscribe = await getMessages(ChatId);
-//       getChatMessage(unsubscribe);
-//       setIsLoading(false); // Set loading to false after data is fetched
-//       // Unsubscribe when the component unmounts
-//       // return () => unsubscribe();
-//     }
-//   };
-//   fetchData();
-// }, [ChatId]);

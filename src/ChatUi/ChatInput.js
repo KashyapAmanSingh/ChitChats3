@@ -8,14 +8,14 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
-import {createMessage, getMessagesRealTime} from '../firebaseFns';
+import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 
-const ChatInput = ({senderId, receiverId, ChatId,getmessage}) => {
+const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
   const [countMessage, setcountMessage] = useState(0);
- 
+
   const handleSend = () => {
     if (message.trim() !== '' && message && message) {
       const uuid = uuidv4();
@@ -30,9 +30,9 @@ const ChatInput = ({senderId, receiverId, ChatId,getmessage}) => {
         {getmessage && (
           <FlatList
             data={getmessage}
-            renderItem={items => (
+            renderItem={(items, index) => (
               <View>
-                {items.item.senderId !== senderId ? (
+                {items.item.senderId === senderId ? (
                   <Text
                     style={[styles.ChatMessage, styles.ChatMessageReceiver]}>
                     {items.item.message}

@@ -23,6 +23,9 @@ import SignUpForm from './src/SinUp';
 import UserLists from './src/UserLists/UserLists';
 import {signOut} from './src/firebaseFns';
 import ChatUI from './src/ChatUi/ChatUi';
+import AloneCaller from './src/VideoCall/AloneCaller';
+import ZegoCall from './src/VideoCall/ZegoCall';
+import HomeScreen from './src/VideoCall/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +36,8 @@ const App = () => {
         initialRouteName="Home"
         screenOptions={{
           title: 'Users ',
+          // headerRight: () => <Button onPress={signOut} title="signOut" />,
+
           headerStyle: {
             backgroundColor: '#474FB6',
           },
@@ -45,7 +50,7 @@ const App = () => {
           name="Home"
           component={Home}
           options={{
-            headerRight: () => <Button onPress={signOut} title="signOut" />,
+            // headerRight: () => <Button onPress={signOut} title="signOut" />,
             title: 'Users Home',
             headerTitleStyle: {fontSize: 30},
             headerTintColor: 'white',
@@ -84,14 +89,43 @@ const App = () => {
             },
           }}
         />
+
+        <Stack.Screen
+          name="AloneCaller"
+          component={AloneCaller}
+          options={{
+            title: 'AloneCaller',
+            headerStyle: {
+              backgroundColor: '#474FB6',
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="ZegoCall"
+          component={ZegoCall}
+          options={{
+            title: 'ZegoCall',
+            headerStyle: {
+              backgroundColor: '#474FB6',
+            },
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            title: 'HomeScreen',
+            headerStyle: {
+              backgroundColor: '#474FB6',
+            },
+          }}
+        />
       </Stack.Navigator>
 
       {/* Additional UI components can be rendered outside of the navigator */}
-      {/* <TouchableOpacity style={styles.button}>
-        <Text style={[styles.buttonText, styles.SignInFormText]}>
-          Click TO go on signIn Form
-        </Text>
-      </TouchableOpacity> */}
     </NavigationContainer>
   );
 };
@@ -101,7 +135,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 6,
     borderRadius: 4,
-    backgroundColor: 'red',
+    backgroundColor: 'purple',
     marginHorizontal: '1%',
     marginBottom: 6,
     minWidth: '48%',
@@ -110,7 +144,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: 'red',
     textAlign: 'center',
     textAlignVertical: 'center',
     fontSize: 20,

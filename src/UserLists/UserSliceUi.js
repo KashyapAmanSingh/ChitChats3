@@ -1,36 +1,31 @@
 /* eslint-disable prettier/prettier */
-import {
-  Alert,
-  Image,
-  Button,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import ZegoCall from '../VideoCall/ZegoCall';
 
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
   const handleRouteSend = () => {
     navigation.navigate('ChatUI', {userId: userIds[index]});
-    // Alert.alert('UserSlice', userIds[index]);
   };
 
   const personalProfileIndex = userIds.indexOf(personalIds);
   if (personalProfileIndex === index) return;
 
   return (
-    <TouchableOpacity onPress={handleRouteSend}>
-      <View style={styles.userItem}>
-        <View style={styles.iconContainer}>
-          <Image source={require('../assets/ProfileIcon.gif')} />
-        </View>
+ 
+      <TouchableOpacity onPress={handleRouteSend}>
+        <View style={styles.userItem}>
+          <View style={styles.iconContainer}>
+            <Image source={require('../assets/ProfileIcon.gif')} />
+          </View>
 
-        <Text style={styles.userItemText}>{user.name}</Text>
-      </View>
-    </TouchableOpacity>
+          <Text style={styles.userItemText}>{user.name}</Text>
+        </View>
+      </TouchableOpacity>
+ 
+ 
   );
 };
 
@@ -42,15 +37,13 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 6,
+    borderBottomWidth: 1,
     borderBottomColor: 'black',
     borderTopColor: 'black',
     borderTopWidth: 1,
     backgroundColor: 'white',
     height: 80,
-    width: '100%',
-
-    marginBottom: 0,
+    width: 410,
   },
   iconContainer: {
     marginRight: 0,

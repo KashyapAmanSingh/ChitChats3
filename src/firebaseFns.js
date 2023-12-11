@@ -102,11 +102,6 @@ export const createMessage = async (
   senderId,
   receiverId,
 ) => {
-  console.log(
-    '🚃🚃🚃🚃🚃🚃🚃🚃🚃🚃🚃🚃🚃 In the CreateMessage firenase',
-    ChatId,
-  );
-
   try {
     // Access the Firestore database
     const db = firestore();
@@ -140,18 +135,15 @@ export const getMessages = async ChatId => {
       .orderBy('createdAt')
       .get();
     const messagesList = messages.docs.map(doc => doc.data());
-    console.log('Message data:😊😊😊😊😊        messageData', messagesList);
     return messagesList;
   } catch {
-    console.log('Error while getting messages😊');
+    console.log('Error while getting messages ');
   }
 };
 
 //RealTime Messaging
 
 export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
-  console.log('🚲 🚲🚲🚲🚲🚲 step 1 after realtime chat datas');
-
   try {
     const subscriber = firestore()
       .collection('messages')
@@ -164,8 +156,6 @@ export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
         });
         getChatMessage(allmessages);
       });
-
-    console.log('🚲 🚲🚲🚲 step 2  after realtime chat datas');
   } catch (error) {
     console.error('Error while getting messages:', error);
   }
