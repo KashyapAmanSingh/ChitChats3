@@ -34,6 +34,8 @@ function HomeScreen() {
             if (randomId.length > 5) {
               navigation.navigate('ZegoCall', {
                 callId: randomId,
+                userName: `Random${randomId}`,
+                callType: 'VideoCall',
               });
             } else {
               //
@@ -73,4 +75,4 @@ function HomeScreen() {
 //   );
 // }
 
-  export default HomeScreen;
+export default HomeScreen;

@@ -3,6 +3,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import ZegoCall from '../VideoCall/ZegoCall';
+import CallingBtn from '../CallingBtn/voiceCallingBtn';
 
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
@@ -14,18 +15,17 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
   if (personalProfileIndex === index) return;
 
   return (
- 
-      <TouchableOpacity onPress={handleRouteSend}>
-        <View style={styles.userItem}>
-          <View style={styles.iconContainer}>
-            <Image source={require('../assets/ProfileIcon.gif')} />
-          </View>
-
-          <Text style={styles.userItemText}>{user.name}</Text>
+    <TouchableOpacity onPress={handleRouteSend}>
+      <View style={styles.userItem}>
+        <View style={styles.iconContainer}>
+          <Image source={require('../assets/ProfileIcon.gif')} />
         </View>
-      </TouchableOpacity>
- 
- 
+
+        <Text style={styles.userItemText}>{user.name}</Text>
+
+        <CallingBtn userID={user.phone} userName={user.name} />
+      </View>
+    </TouchableOpacity>
   );
 };
 
