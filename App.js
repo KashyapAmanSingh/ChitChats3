@@ -25,9 +25,11 @@ import UserLists from './src/UserLists/UserLists';
 import {signOut} from './src/firebaseFns';
 import ChatUI from './src/ChatUi/ChatUi';
 import AloneCaller from './src/VideoCall/AloneCaller';
-import ZegoCall from './src/VideoCall/ZegoCall';
-import HomeScreen from './src/VideoCall/HomeScreen';
-import {ZegoCallInvitationDialog, ZegoUIKitPrebuiltCallInCallScreen, ZegoUIKitPrebuiltCallWaitingScreen} from '@zegocloud/zego-uikit-prebuilt-call-rn';
+import {
+  ZegoCallInvitationDialog,
+  ZegoUIKitPrebuiltCallInCallScreen,
+  ZegoUIKitPrebuiltCallWaitingScreen,
+} from '@zegocloud/zego-uikit-prebuilt-call-rn';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +41,7 @@ const App = () => {
         initialRouteName="Home"
         screenOptions={{
           title: 'Users ',
-           headerRight: () => <Button onPress={signOut} title="signOut" />,
+            headerRight: () => <Button onPress={signOut} title="signOut" />,
 
           headerStyle: {
             backgroundColor: '#474FB6',
@@ -78,7 +80,7 @@ const App = () => {
           component={UserLists}
           options={{
             title: 'Users UserLists',
-            // headerRight: () => <Button onPress={signOut} title="signOut" />,
+            headerRight: () => <Button onPress={signOut} title="signOut" />,
           }}
         />
 
@@ -87,6 +89,7 @@ const App = () => {
           component={ChatUI}
           options={{
             title: 'ChatUI',
+            headerRight: () => <Button onPress={signOut} title="signOut" />,
             headerStyle: {
               backgroundColor: '#474FB6',
             },
@@ -105,28 +108,6 @@ const App = () => {
         />
 
         <Stack.Screen
-          name="ZegoCall"
-          component={ZegoCall}
-          options={{
-            title: 'ZegoCall',
-            headerStyle: {
-              backgroundColor: '#474FB6',
-            },
-            headerShown: false,
-          }}
-        />
-
-        <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
-          options={{
-            title: 'HomeScreen',
-            headerStyle: {
-              backgroundColor: '#474FB6',
-            },
-          }}
-        />
-        <Stack.Screen
           options={{headerShown: false}}
           // DO NOT change the name
           name="ZegoUIKitPrebuiltCallWaitingScreen"
@@ -140,35 +121,10 @@ const App = () => {
         />
       </Stack.Navigator>
 
-      {/* Additional UI components can be rendered outside of the navigator */}
-    </NavigationContainer>
+     </NavigationContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 4,
-    backgroundColor: 'purple',
-    marginHorizontal: '1%',
-    marginBottom: 6,
-    minWidth: '48%',
-    height: 40,
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: 'red',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  SignInFormText: {
-    textShadowColor: 'blue',
-    color: 'blue',
-  },
-});
+ 
 
 export default App;

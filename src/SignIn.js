@@ -9,59 +9,50 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import {signInfn} from './firebaseFns';
+import {ReadCollectionsById, signInfn} from './firebaseFns';
 import {storeId} from './AsyncStorageUtility/AsyncUtility';
-import {useNavigation} from '@react-navigation/native';
-import {getFirstInstallTime} from 'react-native-device-info';
 import {onUserLogin, storeUserInfo} from './VideoCall/ZegoUtillity';
+import {useNavigation} from '@react-navigation/native';
 
 const SignInForm = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-  const [userIDZego, setUserIDZego] = useState('');
-  const [userNameZego, setUserNameZego] = useState('');
-
-  useEffect(() => {
-    getFirstInstallTime().then(firstInstallTime => {
-      const id = String(firstInstallTime).slice(-5);
-      setUserIDZego(id);
-      const name = 'user_' + id;
-      setUserNameZego(name);
-    });
-  }, []);
   const handleSignIn = async () => {
+    Alert.alert(`----=================================-----------------Sign button pressed------=================================--------------------------`)
     try {
       const SecurityId = await signInfn(email, password);
-      storeId({key: 'UserId', id: SecurityId});
-      storeUserInfo({userIDZego, userNameZego}); //for zego update
-      // Init the call service
-      onUserLogin(userIDZego, userNameZego).then(() => {
-        // Jump to HomeScreen to make new call
-        navigation.navigate('HomeScreen', {userIDZego});
-      });
-      // props.navigation.navigate('Home');
+      if (SecurityId) {
+        storeId({key: 'UserId', id: SecurityId});
+        const {userList: users, userId} = await ReadCollectionsById(
+          'users',
+          SecurityId,
+        );
+        const userNameZego = users[0].name;
+        const userIDZego = users[0].phone;
+
+        if (userIDZego && userNameZego) {
+          storeUserInfo({userIDZego, userNameZego});
+          onUserLogin(userIDZego, userNameZego).then(() => {
+            // Jump to HomeScreen to make new call
+            navigation.navigate('UserLists', {userIDZego});
+          });
+        }
+
+        console.log(
+          users[0].name,
+          users[0].phone,
+          userId,
+          ' 🛵🛵🛵🛵🛵🛵  🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛵🛵',
+        );
+      }
     } catch (error) {
-      // Handle errors if needed
       console.error('Error during sign in:', error);
     }
   };
-  useEffect(() => {
-    getFirstInstallTime().then(firstInstallTime => {
-      const id = String(firstInstallTime).slice(-5);
-      setUserIDZego(id);
-      const name = 'user_' + id;
-      setUserNameZego(name);
-    });
-  }, []);
 
   return (
     <View style={styles.container}>
-      <View style={{marginBottom: 30}}>
-        <Text>userID: {userIDZego}</Text>
-        <Text>userName: {userNameZego}</Text>
-      </View>
-
       <View style={styles.Inputcontainer}>
         <TextInput
           style={styles.input}

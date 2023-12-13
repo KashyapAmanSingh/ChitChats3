@@ -2,8 +2,7 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
-import UserLists from './UserLists/UserLists';
-import ZegoCall from './VideoCall/ZegoCall';
+
 const Home = props => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
@@ -12,7 +11,7 @@ const Home = props => {
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
-    if (initializing) setInitializing(false);
+    if (initializing) {setInitializing(false)};
   }
 
   useEffect(() => {
@@ -20,31 +19,22 @@ const Home = props => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  if (initializing) return null;
+  if (initializing) {return null};
 
   return (
     <View style={styles.HomeContainer}>
-      {!user ? (
-        <>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => props.navigation.navigate('SignUpForm')}>
-            <Text style={[styles.buttonText, styles.SignInFormText]}>
-              SignUpForm
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => props.navigation.navigate('SignInForm')}>
-            <Text style={[styles.buttonText, styles.SignInFormText]}>
-              Sign In
-            </Text>
-          </TouchableOpacity>
-        </>
-      ) : (
-        <UserLists />
-        // <ZegoCall/>
-      )}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => props.navigation.navigate('SignUpForm')}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>
+          SignUpForm
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => props.navigation.navigate('SignInForm')}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>Sign In</Text>
+      </TouchableOpacity>
     </View>
   );
 };

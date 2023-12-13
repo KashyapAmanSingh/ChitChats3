@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import {Alert} from 'react-native';
 import {removeId, storeId} from './AsyncStorageUtility/AsyncUtility';
 import {onSnapshot} from 'firebase/firestore';
-import { onUserLogout } from './VideoCall/ZegoUtillity';
+import {onUserLogout, removeUserInfo} from './VideoCall/ZegoUtillity';
 
 export const signUpfn = async (email, password) => {
   try {
@@ -36,6 +36,7 @@ export const signOut = () => {
     .then(() => console.log('User signed out!'));
   removeId('UserId');
   onUserLogout();
+  removeUserInfo()
 };
 
 export const signInfn = async (email, password) => {
@@ -45,7 +46,6 @@ export const signInfn = async (email, password) => {
       password,
     );
     const user = userCredential.user;
-
     return user.uid;
   } catch (error) {
     if (error.code === 'auth/email-already-in-use') {
@@ -60,6 +60,23 @@ export const signInfn = async (email, password) => {
     throw error; // Rethrow the error to handle it at the calling location
   }
 };
+
+// export const getUser = async ChatId => {
+//   const ChattingId = await ChatId;
+
+//   try {
+//     const messages = await firestore()
+//       .collection('messages')
+//       .doc(ChattingId)
+//       .collection('MessageLists')
+//       .orderBy('createdAt')
+//       .get();
+//     const messagesList = messages.docs.map(doc => doc.data());
+//     return messagesList;
+//   } catch {
+//     console.log('Error while getting messages ');
+//   }
+// };
 
 export const createUser = async (
   collectionDocsName,
@@ -89,14 +106,40 @@ export const createUser = async (
   }
 };
 
-export const ReadCollections = async collectionName => {
-  const users = await firestore().collection(collectionName).get();
-  // const user = await firestore().collection('Users').doc('ABC').get();
+export const ReadCollections = async (collectionName, docsId) => {
+  let users;
+  if (collectionName) {
+    users = await firestore().collection(collectionName).get();
+  } else if (collectionName && docsId) {
+    console.log(
+      collectionName,
+      docsId,
+      'From User list component collectionName , docsId 🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸',
+    );
+
+    users = await firestore().collection(collectionName).doc(docsId).get();
+  }
 
   const userList = users.docs.map(doc => doc.data());
   const userId = users.docs.map(doc => doc.id);
   return {userList, userId};
 };
+export const ReadCollectionsById = async (collectionName, docsId) => {
+  if (collectionName && docsId) {
+    const user = await firestore().collection(collectionName).doc(docsId).get();
+
+    if (user.exists) {
+      const userList = [user.data()]; // Wrap the single user data in an array
+      const userId = user.id;
+
+      return {userList, userId};
+    } else {
+      console.error('User not found.');
+      return {userList: [], userId: null};
+    }
+  }
+};
+
 export const createMessage = async (
   uuid,
   message,
