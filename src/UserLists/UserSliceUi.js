@@ -23,7 +23,7 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
 
         <Text style={styles.userItemText}>{user.name}</Text>
 
-        <CallingBtn userID={user.phone} userName={user.name} />
+        {/* <CallingBtn userID={user.phone} userName={user.name} /> */}
       </View>
     </TouchableOpacity>
   );

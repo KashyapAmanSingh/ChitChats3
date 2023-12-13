@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import {Alert} from 'react-native';
 import {removeId, storeId} from './AsyncStorageUtility/AsyncUtility';
 import {onSnapshot} from 'firebase/firestore';
+import { onUserLogout } from './VideoCall/ZegoUtillity';
 
 export const signUpfn = async (email, password) => {
   try {
@@ -34,6 +35,7 @@ export const signOut = () => {
     .signOut()
     .then(() => console.log('User signed out!'));
   removeId('UserId');
+  onUserLogout();
 };
 
 export const signInfn = async (email, password) => {

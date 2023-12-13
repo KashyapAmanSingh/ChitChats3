@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -26,17 +27,19 @@ import ChatUI from './src/ChatUi/ChatUi';
 import AloneCaller from './src/VideoCall/AloneCaller';
 import ZegoCall from './src/VideoCall/ZegoCall';
 import HomeScreen from './src/VideoCall/HomeScreen';
+import {ZegoCallInvitationDialog, ZegoUIKitPrebuiltCallInCallScreen, ZegoUIKitPrebuiltCallWaitingScreen} from '@zegocloud/zego-uikit-prebuilt-call-rn';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
+      <ZegoCallInvitationDialog />
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
           title: 'Users ',
-          // headerRight: () => <Button onPress={signOut} title="signOut" />,
+           headerRight: () => <Button onPress={signOut} title="signOut" />,
 
           headerStyle: {
             backgroundColor: '#474FB6',
@@ -75,7 +78,7 @@ const App = () => {
           component={UserLists}
           options={{
             title: 'Users UserLists',
-            headerRight: () => <Button onPress={signOut} title="signOut" />,
+            // headerRight: () => <Button onPress={signOut} title="signOut" />,
           }}
         />
 
@@ -122,6 +125,18 @@ const App = () => {
               backgroundColor: '#474FB6',
             },
           }}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          // DO NOT change the name
+          name="ZegoUIKitPrebuiltCallWaitingScreen"
+          component={ZegoUIKitPrebuiltCallWaitingScreen}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          // DO NOT change the name
+          name="ZegoUIKitPrebuiltCallInCallScreen"
+          component={ZegoUIKitPrebuiltCallInCallScreen}
         />
       </Stack.Navigator>
 

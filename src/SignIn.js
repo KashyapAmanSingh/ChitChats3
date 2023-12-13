@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,24 +11,57 @@ import {
 } from 'react-native';
 import {signInfn} from './firebaseFns';
 import {storeId} from './AsyncStorageUtility/AsyncUtility';
+import {useNavigation} from '@react-navigation/native';
+import {getFirstInstallTime} from 'react-native-device-info';
+import {onUserLogin, storeUserInfo} from './VideoCall/ZegoUtillity';
 
 const SignInForm = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
+  const [userIDZego, setUserIDZego] = useState('');
+  const [userNameZego, setUserNameZego] = useState('');
+
+  useEffect(() => {
+    getFirstInstallTime().then(firstInstallTime => {
+      const id = String(firstInstallTime).slice(-5);
+      setUserIDZego(id);
+      const name = 'user_' + id;
+      setUserNameZego(name);
+    });
+  }, []);
   const handleSignIn = async () => {
     try {
       const SecurityId = await signInfn(email, password);
       storeId({key: 'UserId', id: SecurityId});
-
-      props.navigation.navigate('Home');
+      storeUserInfo({userIDZego, userNameZego}); //for zego update
+      // Init the call service
+      onUserLogin(userIDZego, userNameZego).then(() => {
+        // Jump to HomeScreen to make new call
+        navigation.navigate('HomeScreen', {userIDZego});
+      });
+      // props.navigation.navigate('Home');
     } catch (error) {
       // Handle errors if needed
       console.error('Error during sign in:', error);
     }
   };
+  useEffect(() => {
+    getFirstInstallTime().then(firstInstallTime => {
+      const id = String(firstInstallTime).slice(-5);
+      setUserIDZego(id);
+      const name = 'user_' + id;
+      setUserNameZego(name);
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
+      <View style={{marginBottom: 30}}>
+        <Text>userID: {userIDZego}</Text>
+        <Text>userName: {userNameZego}</Text>
+      </View>
+
       <View style={styles.Inputcontainer}>
         <TextInput
           style={styles.input}
