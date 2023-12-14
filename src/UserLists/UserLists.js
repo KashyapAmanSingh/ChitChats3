@@ -8,11 +8,11 @@ import {
   Text,
   Button,
 } from 'react-native';
-import {ReadCollections} from '../firebaseFns';
+import {ReadCollections, signOut} from '../firebaseFns';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 import {useNavigation} from '@react-navigation/native';
- 
+
 const UserLists = props => {
   const [userList, setUserList] = useState([]);
   const [userIds, setUserIds] = useState([]);
@@ -30,7 +30,11 @@ const UserLists = props => {
     fetchUsers();
   }, []);
 
- 
+  const SignOuthandler = () => {
+    navigation.navigate('Home');
+    signOut();
+  };
+
   return (
     <>
       <View style={styles.UserListsUi}>
@@ -47,20 +51,9 @@ const UserLists = props => {
           )}
         />
       </View>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('AloneCaller')}>
-        <Text style={[styles.buttonText, styles.SignInFormText]}>Meeting AloneCaller</Text>
+      <TouchableOpacity style={styles.button} onPress={SignOuthandler}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>Sign Out</Text>
       </TouchableOpacity>
-      <View style={{width: 220, marginTop: 100}}>
-        <Button
-          title="Back To Login Screen"
-          onPress={() => {
-            navigation.navigate('SignInForm');
-          }}
-        />
-      </View>
     </>
   );
 };

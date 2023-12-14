@@ -1,12 +1,11 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import {ReadCollectionsById, signInfn} from './firebaseFns';
 import {storeId} from './AsyncStorageUtility/AsyncUtility';
@@ -22,7 +21,7 @@ const SignInForm = props => {
       const SecurityId = await signInfn(email, password);
       if (SecurityId) {
         storeId({key: 'UserId', id: SecurityId});
-        const {userList: users, userId} = await ReadCollectionsById(
+        const {userList: users } = await ReadCollectionsById(
           'users',
           SecurityId,
         );
@@ -32,7 +31,7 @@ const SignInForm = props => {
         if (userIDZego && userNameZego) {
           storeUserInfo({userIDZego, userNameZego});
           onUserLogin(userIDZego, userNameZego).then(() => {
-             navigation.navigate('UserLists', {userIDZego});
+            navigation.navigate('UserLists', {userIDZego});
           });
         }
       }
@@ -90,8 +89,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   input: {
-    color: 'red',
-
+    color: '#474FB6',
+fontWeight: 'bold',
     height: 40,
     borderColor: 'black',
     borderWidth: 2,

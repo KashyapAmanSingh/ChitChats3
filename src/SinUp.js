@@ -8,7 +8,6 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Button,
   Alert,
 } from 'react-native';
 import createUser, {signUpfn} from './firebaseFns';
@@ -23,8 +22,9 @@ const SignUpForm = props => {
   const [name, setName] = useState('');
 
   const handleSignUp = async () => {
-    if (confirmPassword !== password)
+    if (confirmPassword !== password) {
       return Alert.alert('Please enter correct your password');
+    }
 
     const uuid = uuidv4();
     const userId = await signUpfn(email, password);

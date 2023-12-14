@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -60,7 +60,6 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
-        {/* <ShowMessageUi ChatgetMessage={getmessage} /> */}
       </View>
     </View>
   );

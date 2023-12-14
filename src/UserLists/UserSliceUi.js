@@ -2,8 +2,7 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
- import CallingBtn from '../CallingBtn/voiceCallingBtn';
- 
+import CallingBtn from '../CallingBtn/voiceCallingBtn';
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
   const handleRouteSend = () => {
@@ -11,7 +10,9 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
   };
 
   const personalProfileIndex = userIds.indexOf(personalIds);
-  if (personalProfileIndex === index) return;
+  if (personalProfileIndex === index) {
+    return;
+  }
 
   return (
     <TouchableOpacity onPress={handleRouteSend}>
@@ -21,7 +22,6 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
         </View>
 
         <Text style={styles.userItemText}>{user.name}</Text>
- 
       </View>
       <CallingBtn userID={user.phone} userName={user.name} />
     </TouchableOpacity>

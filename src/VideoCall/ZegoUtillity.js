@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable no-undef */
-import AsyncStorage from '@react-native-async-storage/async-storage';
+ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as ZIM from 'zego-zim-react-native';
 import * as ZPNs from 'zego-zpns-react-native';
@@ -15,7 +14,7 @@ export const getUserInfo = async () => {
   try {
     const userIDZego = await AsyncStorage.getItem('userIDZego');
     const userNameZego = await AsyncStorage.getItem('userNameZego');
-    if (userIDZego == undefined) {
+    if (userIDZego === undefined) {
       return undefined;
     } else {
       return {userIDZego, userNameZego};

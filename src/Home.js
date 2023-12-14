@@ -2,16 +2,18 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
-
+ 
 const Home = props => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
 
   // Handle user state changes
-  function onAuthStateChanged(user) {
+  function onAuthStateChanged() {
     setUser(user);
-    if (initializing) {setInitializing(false)};
+    if (initializing) {
+      setInitializing(false);
+    }
   }
 
   useEffect(() => {
@@ -19,8 +21,9 @@ const Home = props => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  if (initializing) {return null};
-
+  if (initializing) {
+    return null;
+  }
   return (
     <View style={styles.HomeContainer}>
       <TouchableOpacity
