@@ -6,7 +6,11 @@ import CallingBtn from '../CallingBtn/voiceCallingBtn';
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
   const handleRouteSend = () => {
-    navigation.navigate('ChatUI', {userId: userIds[index]});
+    navigation.navigate('ChatUI', {
+      userId: userIds[index],
+      userPhone: user.phone,
+      userName: user.name,
+    });
   };
 
   const personalProfileIndex = userIds.indexOf(personalIds);

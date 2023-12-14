@@ -27,9 +27,10 @@ export default CallingBtn;
 const styles = StyleSheet.create({
   Btncontainer: {flexDirection: 'row'},
   container: {
-    backgroundColor: 'wheat',
+    backgroundColor: '#474FB600',
     alignItems: 'center',
     flex: 1,
     display: 'flex',
+    justifyContent: 'center',
   },
 });

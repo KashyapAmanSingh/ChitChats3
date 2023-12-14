@@ -6,8 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Text,
-  Button,
-} from 'react-native';
+ } from 'react-native';
 import {ReadCollections, signOut} from '../firebaseFns';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';

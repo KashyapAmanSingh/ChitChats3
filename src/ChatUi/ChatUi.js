@@ -3,8 +3,9 @@ import React, {useEffect, useState} from 'react';
 import ChatInput from './ChatInput';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import {getMessagesRealTime} from '../firebaseFns';
-import {Alert} from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import CallingBtn from '../CallingBtn/voiceCallingBtn';
+import {useNavigation} from '@react-navigation/native';
 
 const ChatUi = ({route}) => {
   const [receiverId, setReceiverId] = useState(null);
@@ -13,6 +14,9 @@ const ChatUi = ({route}) => {
   const [ChatId, setChatId] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
+  const userPhone = route.params.userPhone;
+  const userName = route.params.userName;
+  const navigation = useNavigation();
   useEffect(() => {
     const fetchData = async () => {
       const id = await getId('UserId');
@@ -37,13 +41,83 @@ const ChatUi = ({route}) => {
   }, [ChatId]);
 
   return (
-    <ChatInput
-      receiverId={receiverId}
-      senderId={senderId}
-      ChatId={ChatId}
-      getmessage={getmessage}
-    />
+    <View style={styles.container}>
+      <View style={styles.CallingBtn}>
+        {userName && userName ? (
+          <View style={styles.UserNameCallBtn}>
+            <TouchableOpacity
+              style={styles.UserGoBackContainer}
+              onPress={() => navigation.goBack()}>
+              <Image
+                style={styles.UserGoBackIcon}
+                source={require('../assets/goBack.png')}
+              />
+            </TouchableOpacity>
+            <Image
+              style={styles.UserChatImage}
+              source={require('../assets/ProfileIcon.gif')}
+            />
+
+            <Text style={styles.ChattingUserName}>{userName}</Text>
+
+            <CallingBtn userID={userPhone} userName={userName} />
+          </View>
+        ) : null}
+      </View>
+      <View style={styles.ChatInput}>
+        <ChatInput
+          receiverId={receiverId}
+          senderId={senderId}
+          ChatId={ChatId}
+          getmessage={getmessage}
+          userName
+          userPhone
+        />
+      </View>
+    </View>
   );
 };
 
 export default ChatUi;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    backgroundColor: '#474FB6',
+  },
+  CallingBtn: {
+    flex: 0.2,
+    alignContent: 'flex-end',
+    justifyContent: 'center',
+  },
+  ChatInput: {
+    flex: 2.1,
+  },
+  ChattingUserName: {
+    color: 'white',
+    width: '50%',
+    alignSelf: 'center',
+    paddingHorizontal: 15,
+    fontWeight: 'bold',
+    fontSize: 27,
+  },
+  UserChatImage: {
+    backgroundColor: 'white',
+    borderRadius: 50,
+    marginLeft: 10,
+    alignSelf: 'center',
+  },
+  UserNameCallBtn: {height: '100%', flexDirection: 'row'},
+  UserGoBackIcon: {
+    width: 25,
+    justifySelf: 'center',
+    marginLeft: 12,
+    height: 29,
+  },
+  UserGoBackContainer: {
+    alignSelf: 'center',
+  },
+});

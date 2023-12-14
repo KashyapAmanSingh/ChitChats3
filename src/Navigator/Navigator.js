@@ -63,7 +63,7 @@ const Navigator = () => {
         component={ChatUi}
         options={{
           title: 'ChatUI',
-
+          headerShown: false,
           headerStyle: {
             backgroundColor: '#474FB6',
           },

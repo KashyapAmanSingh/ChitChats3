@@ -11,8 +11,9 @@ import {
 import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
+import CallingBtn from '../CallingBtn/voiceCallingBtn';
 
-const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
+const ChatInput = ({senderId, receiverId, ChatId, getmessage }) => {
   const [message, setMessage] = useState('');
   const [countMessage, setcountMessage] = useState(0);
 
@@ -26,6 +27,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   };
   return (
     <View style={styles.container}>
+ 
       <View style={styles.chatsLists}>
         {getmessage && (
           <FlatList
@@ -136,3 +138,4 @@ const styles = StyleSheet.create({
 });
 
 export default ChatInput;
+
