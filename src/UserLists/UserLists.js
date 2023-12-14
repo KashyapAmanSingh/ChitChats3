@@ -50,8 +50,8 @@ const UserLists = props => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('HomeScreen')}>
-        <Text style={[styles.buttonText, styles.SignInFormText]}>Meeting</Text>
+        onPress={() => navigation.navigate('AloneCaller')}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>Meeting AloneCaller</Text>
       </TouchableOpacity>
       <View style={{width: 220, marginTop: 100}}>
         <Button

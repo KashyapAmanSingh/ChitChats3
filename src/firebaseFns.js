@@ -36,7 +36,7 @@ export const signOut = () => {
     .then(() => console.log('User signed out!'));
   removeId('UserId');
   onUserLogout();
-  removeUserInfo()
+  removeUserInfo();
 };
 
 export const signInfn = async (email, password) => {
@@ -111,12 +111,6 @@ export const ReadCollections = async (collectionName, docsId) => {
   if (collectionName) {
     users = await firestore().collection(collectionName).get();
   } else if (collectionName && docsId) {
-    console.log(
-      collectionName,
-      docsId,
-      'From User list component collectionName , docsId 🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸',
-    );
-
     users = await firestore().collection(collectionName).doc(docsId).get();
   }
 

@@ -28,20 +28,12 @@ export const removeUserInfo = async () => {
   try {
     await AsyncStorage.removeItem('userIDZego');
     await AsyncStorage.removeItem('userNameZego');
-    console.log(
-      '-----------------------Removed user zego user removed successfully----------------------------',
-    );
   } catch (e) {
     return undefined;
   }
 };
 
 export const onUserLogin = async (userIDZego, userNameZego) => {
-  console.log(
-    'onUserLogin--------------==============,userNameZego🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑',
-    userIDZego,
-    userNameZego,
-  );
   return ZegoUIKitPrebuiltCallService.init(
     2029420731, // You can get it from ZEGOCLOUD's console
     '829be4b899a40cf3eb365864f74fae5ecd8493e46f55dc05d4295bf68a82bcc0', // You can get it from ZEGOCLOUD's console

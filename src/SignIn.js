@@ -7,7 +7,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Button,
-  Alert,
 } from 'react-native';
 import {ReadCollectionsById, signInfn} from './firebaseFns';
 import {storeId} from './AsyncStorageUtility/AsyncUtility';
@@ -19,7 +18,6 @@ const SignInForm = props => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const handleSignIn = async () => {
-    Alert.alert(`----=================================-----------------Sign button pressed------=================================--------------------------`)
     try {
       const SecurityId = await signInfn(email, password);
       if (SecurityId) {
@@ -34,17 +32,9 @@ const SignInForm = props => {
         if (userIDZego && userNameZego) {
           storeUserInfo({userIDZego, userNameZego});
           onUserLogin(userIDZego, userNameZego).then(() => {
-            // Jump to HomeScreen to make new call
-            navigation.navigate('UserLists', {userIDZego});
+             navigation.navigate('UserLists', {userIDZego});
           });
         }
-
-        console.log(
-          users[0].name,
-          users[0].phone,
-          userId,
-          ' 🛵🛵🛵🛵🛵🛵  🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛸🛵🛵',
-        );
       }
     } catch (error) {
       console.error('Error during sign in:', error);
