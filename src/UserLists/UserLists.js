@@ -59,16 +59,17 @@ const UserLists = props => {
 
 const styles = StyleSheet.create({
   UserListsUi: {
-    flex: 1,
+    flex: 1.8,
     backgroundColor: 'white',
     marginTop: 1,
     flexWrap: 'wrap',
   },
   button: {
+    flex: 0.1,
     paddingHorizontal: 8,
     paddingVertical: 6,
     borderRadius: 4,
-    backgroundColor: 'purple',
+    backgroundColor: '#474FB6',
     marginHorizontal: '1%',
     marginBottom: 6,
     minWidth: '48%',
@@ -77,11 +78,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   buttonText: {
-    color: 'red',
+    color: 'white',
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontSize: 20,
+    fontSize: 27,
     fontWeight: 'bold',
+  
   },
   userItem: {
     padding: 16,

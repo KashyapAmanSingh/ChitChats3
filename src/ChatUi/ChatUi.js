@@ -3,7 +3,14 @@ import React, {useEffect, useState} from 'react';
 import ChatInput from './ChatInput';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import {getMessagesRealTime} from '../firebaseFns';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import CallingBtn from '../CallingBtn/voiceCallingBtn';
 import {useNavigation} from '@react-navigation/native';
 
@@ -39,6 +46,7 @@ const ChatUi = ({route}) => {
       getMessagesRealTime(ChatId, getChatMessage);
     }
   }, [ChatId]);
+  
 
   return (
     <View style={styles.container}>
@@ -58,7 +66,7 @@ const ChatUi = ({route}) => {
               source={require('../assets/ProfileIcon.gif')}
             />
 
-            <Text style={styles.ChattingUserName}>{userName}</Text>
+            <Text style={styles.ChattingUserName}>{ userName.slice(0, 8)}...</Text>
 
             <CallingBtn userID={userPhone} userName={userName} />
           </View>

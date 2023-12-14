@@ -7,34 +7,86 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  Image,
+  Alert,
 } from 'react-native';
 import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
-import CallingBtn from '../CallingBtn/voiceCallingBtn';
+import DocumentPicker from 'react-native-document-picker';
+import storage from '@react-native-firebase/storage';
 
-const ChatInput = ({senderId, receiverId, ChatId, getmessage }) => {
+const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
   const [countMessage, setcountMessage] = useState(0);
-
+  const [imageData, setImageData] = useState(null);
+  const [fullImgRefPath, setFullImgRefPath] = useState('');
+  const [imgDownloadUrl, setImgDownloadUrl] = useState('');
+  const uuid = uuidv4();
   const handleSend = () => {
     if (message.trim() !== '' && message && message) {
-      const uuid = uuidv4();
       createMessage(uuid, message, ChatId, senderId, receiverId);
       setMessage(''); // Clear the input after sending
     }
     setcountMessage(countMessage + 1);
   };
+
+  const pickImage = async () => {
+    Alert.alert('pickImage successfully called bro');
+    try {
+      const response = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.images,DocumentPicker.types.audio,DocumentPicker.types.zip,DocumentPicker.types.doc,DocumentPicker.types.pdf,DocumentPicker.types.ppt  ],
+      });
+      console.log(response);
+      setImageData(response);
+    } catch (err) {
+      console.log(err);
+    }
+    uploadImage()
+  };
+  const uploadImage = async () => {
+    try {
+      const response = storage().ref(`/messageImages/${imageData.name}`);
+
+      const put = await response.putFile(imageData.uri);
+
+      setFullImgRefPath(put.metadata.fullPath);
+      const url = await response.getDownloadURL();
+       setImgDownloadUrl(url);
+      createMessage(uuid, url, ChatId, senderId, receiverId);
+
+     } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // const handlecheck = async () => {
+  //   createMessage(
+  //     uuid,
+  //     'https://upload.wikimedia.org/wikipedia/commons/9/95/Salman_Khan_in_2023_%281%29_%28cropped%29.jpg',
+  //     ChatId,
+  //     senderId,
+  //     receiverId,
+  //   );
+  // };
+
+  // const deleteImage = async () => {
+  //   try {
+  //     const response = await storage().ref(fullImgRefPath).delete();
+  //     console.log(response);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   return (
     <View style={styles.container}>
- 
       <View style={styles.chatsLists}>
         {getmessage && (
           <FlatList
             data={getmessage}
             renderItem={(items, index) => (
               <View>
-                {items.item.senderId === senderId ? (
+                {items.item.senderId !== senderId ? (
                   <Text
                     style={[styles.ChatMessage, styles.ChatMessageReceiver]}>
                     {items.item.message}
@@ -52,6 +104,15 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage }) => {
       </View>
 
       <View style={styles.InputContainer}>
+        <TouchableOpacity
+          style={styles.SendItemsIcon}
+          onPress={() => pickImage()}>
+          <Image
+            style={styles.UserGoBackIcon}
+            source={require('../assets/sendIcon3.png')}
+          />
+        </TouchableOpacity>
+
         <TextInput
           style={styles.input}
           placeholder="Type a message..."
@@ -62,6 +123,9 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage }) => {
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.sendButton} onPress={handlecheck}>
+          <Text style={styles.sendButtonText}>upload in dbs</Text>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -135,7 +199,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  SendItemsIcon: {
+    backgroundColor: 'white',
+    // height:2,
+    // width:2
+  },
 });
 
 export default ChatInput;
-

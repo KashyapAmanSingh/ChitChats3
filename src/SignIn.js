@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {ReadCollectionsById, signInfn} from './firebaseFns';
 import {storeId} from './AsyncStorageUtility/AsyncUtility';
@@ -21,7 +22,7 @@ const SignInForm = props => {
       const SecurityId = await signInfn(email, password);
       if (SecurityId) {
         storeId({key: 'UserId', id: SecurityId});
-        const {userList: users } = await ReadCollectionsById(
+        const {userList: users} = await ReadCollectionsById(
           'users',
           SecurityId,
         );
@@ -30,9 +31,8 @@ const SignInForm = props => {
 
         if (userIDZego && userNameZego) {
           storeUserInfo({userIDZego, userNameZego});
-          onUserLogin(userIDZego, userNameZego).then(() => {
-            navigation.navigate('UserLists', {userIDZego});
-          });
+          onUserLogin(userIDZego, userNameZego);
+          navigation.navigate('UserLists', {userIDZego});
         }
       }
     } catch (error) {
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   input: {
     color: '#474FB6',
-fontWeight: 'bold',
+    fontWeight: 'bold',
     height: 40,
     borderColor: 'black',
     borderWidth: 2,
