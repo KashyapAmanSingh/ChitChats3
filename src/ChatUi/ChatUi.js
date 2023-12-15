@@ -100,9 +100,11 @@ const styles = StyleSheet.create({
     flex: 0.2,
     alignContent: 'flex-end',
     justifyContent: 'center',
+  
   },
   ChatInput: {
     flex: 2.1,
+   
   },
   ChattingUserName: {
     color: 'white',
