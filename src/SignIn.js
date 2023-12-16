@@ -18,9 +18,14 @@ const SignInForm = props => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const handleSignIn = async () => {
+    //  Alert.alert('Sign pressed from 1st');
+
     try {
       const SecurityId = await signInfn(email, password);
+      // Alert.alert('Sign pressed from 3rd  ');
+
       if (SecurityId) {
+
         storeId({key: 'UserId', id: SecurityId});
         const {userList: users} = await ReadCollectionsById(
           'users',

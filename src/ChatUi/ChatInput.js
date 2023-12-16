@@ -186,11 +186,11 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     paddingHorizontal: 0,
     paddingVertical: 0,
-    paddingTop:15,
+    paddingTop: 15,
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
-   },
+  },
   chatsLists: {
     backgroundColor: 'white',
     flex: 9,
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     backgroundColor: 'white',
     marginVertical: 8,
-  
+
     flexWrap: 'wrap',
     // width: 190,
     justifyContent: 'center',

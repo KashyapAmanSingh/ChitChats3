@@ -38,7 +38,9 @@ export const signOut = async () => {
     onUserLogout();
     removeUserInfo();
     return Alert.alert('User signed out!');
-  } catch (error) {Alert.alert('Error signed out!')}
+  } catch (error) {
+    Alert.alert('Error signed out!');
+  }
 };
 
 export const signInfn = async (email, password) => {
@@ -47,6 +49,7 @@ export const signInfn = async (email, password) => {
       email,
       password,
     );
+    Alert.alert('Sign pressed from 2nd');
     const user = userCredential.user;
     return user.uid;
   } catch (error) {
@@ -118,13 +121,16 @@ export const ReadCollectionsById = async (collectionName, docsId) => {
 
 export const createMessage = async (
   uuid,
-  types ,
+  types,
   message,
   ChatId,
   senderId,
   receiverId,
 ) => {
-  console.log('🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾Creating message with type of file may failed🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾', types)
+  console.log(
+    '🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾Creating message with type of file may failed🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾',
+    types,
+  );
   try {
     // Access the Firestore database
     const db = firestore();
@@ -136,7 +142,7 @@ export const createMessage = async (
       .doc(uuid)
       .set({
         ChatId: uuid,
-        fileType:types,
+        fileType: types,
         message: message,
         senderId: senderId,
         receiverId: receiverId,
