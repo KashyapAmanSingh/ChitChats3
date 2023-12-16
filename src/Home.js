@@ -2,21 +2,38 @@
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
-import UserLists from './UserLists/UserLists';
 import {getId} from './AsyncStorageUtility/AsyncUtility';
+import {signOut} from './firebaseFns';
 
 const Home = props => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-
   // Handle user state changes
-  function onAuthStateChanged(user) {
+  function onAuthStateChanged() {
     setUser(user);
     if (initializing) {
       setInitializing(false);
     }
   }
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const storedId = await getId('UserId');
+        if (!storedId) {
+          return;
+        }
+        if (storedId) {
+          signOut();
+        }
+        Alert.alert('User ainged out initially');
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
