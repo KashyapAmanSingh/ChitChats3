@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import CallingBtn from '../CallingBtn/voiceCallingBtn';
@@ -12,22 +12,22 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
       userName: user.name,
     });
   };
-
-  const personalProfileIndex = userIds.indexOf(personalIds);
+   const personalProfileIndex = userIds.indexOf(personalIds);
   if (personalProfileIndex === index) {
     return;
   }
 
   return (
     <TouchableOpacity onPress={handleRouteSend}>
+
       <View style={styles.userItem}>
         <View style={styles.iconContainer}>
           <Image source={require('../assets/ProfileIcon.gif')} />
         </View>
 
-        <Text style={styles.userItemText}>{user.name}</Text>
+        <Text style={styles.userItemText}>{user.name.slice(0, 8) }...</Text>
+       <CallingBtn userID={user.phone} userName={user.name} />
       </View>
-      <CallingBtn userID={user.phone} userName={user.name} />
     </TouchableOpacity>
   );
 };

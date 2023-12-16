@@ -11,7 +11,7 @@ import {
   ZegoUIKitPrebuiltCallInCallScreen,
   ZegoUIKitPrebuiltCallWaitingScreen,
 } from '@zegocloud/zego-uikit-prebuilt-call-rn';
- 
+
 const Stack = createNativeStackNavigator();
 const Navigator = () => {
   return (
@@ -37,6 +37,7 @@ const Navigator = () => {
           headerTintColor: 'white',
         }}
       />
+
       <Stack.Screen
         name="SignInForm"
         component={SignInForm}
@@ -54,7 +55,7 @@ const Navigator = () => {
         name="UserLists"
         component={UserLists}
         options={{
-          title: 'Users UserLists',
+          title: 'ChitChat 0.3',
         }}
       />
 

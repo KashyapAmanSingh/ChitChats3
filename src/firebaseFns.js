@@ -126,10 +126,7 @@ export const createMessage = async (
   senderId,
   receiverId,
 ) => {
-  console.log(
-    '🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾Creating message with type of file may failed🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾🗾',
-    types,
-  );
+ 
   try {
     // Access the Firestore database
     const db = firestore();

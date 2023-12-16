@@ -32,22 +32,23 @@ export const removeUserInfo = async () => {
     return undefined;
   }
 };
- 
 
 export const onUserLogin = async (userIDZego, userNameZego) => {
- 
   return ZegoUIKitPrebuiltCallService.init(
     2029420731, // You can get it from ZEGOCLOUD's console
     '829be4b899a40cf3eb365864f74fae5ecd8493e46f55dc05d4295bf68a82bcc0', // You can get it from ZEGOCLOUD's console
     userIDZego,
     userNameZego,
     [ZIM, ZPNs],
+
     {
       ringtoneConfig: {
         incomingCallFileName: 'zego_incoming.mp3',
         outgoingCallFileName: 'zego_outgoing.mp3',
       },
+
       notifyWhenAppRunningInBackgroundOrQuit: true,
+
       androidNotificationConfig: {
         channelID: 'ChitChat_Video_Call',
         channelName: 'ChitChat_Video_Call',

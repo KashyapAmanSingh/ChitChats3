@@ -1,30 +1,48 @@
 /* eslint-disable prettier/prettier */
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
- 
+import UserLists from './UserLists/UserLists';
+import {getId} from './AsyncStorageUtility/AsyncUtility';
+
 const Home = props => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
+  const [userId, setId] = useState(null);
 
   // Handle user state changes
   function onAuthStateChanged() {
     setUser(user);
+
     if (initializing) {
       setInitializing(false);
     }
   }
-
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    return subscriber;
+  }, []);
+
+  // Check if storedId is an object
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const storedId = await getId('UserId');
+        setId(storedId);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
   }, []);
 
   if (initializing) {
     return null;
   }
-  return (
+
+  return !user && !userId ? (
     <View style={styles.HomeContainer}>
       <TouchableOpacity
         style={styles.button}
@@ -39,6 +57,8 @@ const Home = props => {
         <Text style={[styles.buttonText, styles.SignInFormText]}>Sign In</Text>
       </TouchableOpacity>
     </View>
+  ) : (
+    <UserLists />
   );
 };
 

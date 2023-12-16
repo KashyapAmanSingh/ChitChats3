@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     backgroundColor: 'white',
-    marginVertical: 8,
+    marginVertical: 9,
 
     flexWrap: 'wrap',
     // width: 190,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 5,
     marginLeft: 25,
-    marginRight: 10,
+    marginRight: 28,
     paddingHorizontal: 15,
     color: '#474FB6',
   },

@@ -6,7 +6,6 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import {ReadCollectionsById, signInfn} from './firebaseFns';
 import {storeId} from './AsyncStorageUtility/AsyncUtility';
@@ -27,12 +26,17 @@ const SignInForm = props => {
           'users',
           SecurityId,
         );
-        const userNameZego = users[0].name;
-        const userIDZego = users[0].phone;
 
-        if (userIDZego && userNameZego) {
+        if (users) {
+          const userNameZego = users[0].name;
+          const userIDZego = users[0].phone;
           storeUserInfo({userIDZego, userNameZego});
-          onUserLogin(userIDZego, userNameZego);
+          onUserLogin(userIDZego, userNameZego)
+            .then(message => {
+              console.log(message);
+            })
+            .catch(err => console.log(err.message));
+
           navigation.navigate('UserLists', {userIDZego});
         }
       }
