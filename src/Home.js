@@ -9,40 +9,25 @@ const Home = props => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  const [userId, setId] = useState(null);
 
   // Handle user state changes
-  function onAuthStateChanged() {
+  function onAuthStateChanged(user) {
     setUser(user);
-
     if (initializing) {
       setInitializing(false);
     }
   }
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  });
-
-  // Check if storedId is an object
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const storedId = await getId('UserId');
-        setId(storedId);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-
-    fetchData();
+    return subscriber; // unsubscribe on unmount
   }, []);
 
   if (initializing) {
     return null;
   }
 
-  return !user && !userId ? (
+  return (
     <View style={styles.HomeContainer}>
       <TouchableOpacity
         style={styles.button}
@@ -57,8 +42,6 @@ const Home = props => {
         <Text style={[styles.buttonText, styles.SignInFormText]}>Sign In</Text>
       </TouchableOpacity>
     </View>
-  ) : (
-    <UserLists />
   );
 };
 
