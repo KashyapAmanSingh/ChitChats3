@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   UserNameCallBtn: {height: '100%', flexDirection: 'row'},
   UserGoBackIcon: {
     width: 25,
-    justifySelf: 'center',
+    alignSelf: 'center',
     marginLeft: 12,
     height: 29,
   },

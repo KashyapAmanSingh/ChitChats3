@@ -22,7 +22,7 @@ const Home = props => {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
-  }, []);
+  });
 
   // Check if storedId is an object
   useEffect(() => {

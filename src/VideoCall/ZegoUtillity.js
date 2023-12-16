@@ -1,10 +1,9 @@
 /* eslint-disable prettier/prettier */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import * as ZIM from 'zego-zim-react-native';
 import * as ZPNs from 'zego-zpns-react-native';
+
 import ZegoUIKitPrebuiltCallService from '@zegocloud/zego-uikit-prebuilt-call-rn';
-import {Alert} from 'react-native';
 
 export const storeUserInfo = async info => {
   await AsyncStorage.setItem('userIDZego', info.userIDZego);
@@ -35,20 +34,17 @@ export const removeUserInfo = async () => {
 
 export const onUserLogin = async (userIDZego, userNameZego) => {
   return ZegoUIKitPrebuiltCallService.init(
-    2029420731, // You can get it from ZEGOCLOUD's console
-    '829be4b899a40cf3eb365864f74fae5ecd8493e46f55dc05d4295bf68a82bcc0', // You can get it from ZEGOCLOUD's console
+    2029420731,
+    '829be4b899a40cf3eb365864f74fae5ecd8493e46f55dc05d4295bf68a82bcc0',
     userIDZego,
     userNameZego,
     [ZIM, ZPNs],
-
     {
       ringtoneConfig: {
         incomingCallFileName: 'zego_incoming.mp3',
         outgoingCallFileName: 'zego_outgoing.mp3',
       },
-
       notifyWhenAppRunningInBackgroundOrQuit: true,
-
       androidNotificationConfig: {
         channelID: 'ChitChat_Video_Call',
         channelName: 'ChitChat_Video_Call',

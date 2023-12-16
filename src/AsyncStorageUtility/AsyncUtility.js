@@ -17,7 +17,7 @@ export const getId = async key => {
     if (id !== null) {
       return id;
     } else {
-      console.log('No id found for key:', key);
+      console.log('No id found for this key:', key);
       return null;
     }
   } catch (error) {

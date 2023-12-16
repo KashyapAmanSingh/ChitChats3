@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {ZegoSendCallInvitationButton} from '@zegocloud/zego-uikit-prebuilt-call-rn';
 
 const CallingBtn = ({userID, userName}) => {
-  return (
+  return userID && userName ? (
     <View style={styles.container}>
       <View style={styles.Btncontainer}>
         <ZegoSendCallInvitationButton
@@ -19,6 +19,8 @@ const CallingBtn = ({userID, userName}) => {
         />
       </View>
     </View>
+  ) : (
+    Alert.alert('Issue in the VoiceCalling btn component')
   );
 };
 

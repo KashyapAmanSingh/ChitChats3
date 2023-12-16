@@ -27,15 +27,12 @@ const SignInForm = props => {
           SecurityId,
         );
 
-        if (users) {
+        if (users && users.length > 0) {
           const userNameZego = users[0].name;
           const userIDZego = users[0].phone;
+
+          await onUserLogin(userIDZego, userNameZego);
           storeUserInfo({userIDZego, userNameZego});
-          onUserLogin(userIDZego, userNameZego)
-            .then(message => {
-              console.log(message);
-            })
-            .catch(err => console.log(err.message));
 
           navigation.navigate('UserLists', {userIDZego});
         }
