@@ -13,15 +13,13 @@ import {
 import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
-
-import useImageUploader from './UploadFeat/ImageUpload';
+ 
+import pickImage from './UploadFeat/ImageUpload';
 
 const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
 
   const uuid = uuidv4();
-  const {pickImage, imageData, fullImgRefPath, imgDownloadUrl} =
-    useImageUploader(uuid, ChatId, senderId, receiverId);
 
   const handleSend = () => {
     if (message.trim() !== '' && message && message) {
@@ -31,6 +29,9 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
         setMessage('');
       }
     }
+  };
+  const uploadImagehandler = () => {
+    pickImage(uuid, ChatId, senderId, receiverId);
   };
 
   return (
@@ -87,7 +88,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
       <View style={styles.InputContainer}>
         <TouchableOpacity
           style={styles.SendItemsIcon}
-          onPress={() => pickImage()}>
+          onPress={uploadImagehandler}>
           <Image
             style={styles.UserGoBackIcon}
             source={require('../assets/sendIcon1.png')}
