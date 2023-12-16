@@ -49,8 +49,7 @@ export const signInfn = async (email, password) => {
       email,
       password,
     );
-    Alert.alert('Sign pressed from 2nd');
-    const user = userCredential.user;
+     const user = userCredential.user;
     return user.uid;
   } catch (error) {
     if (error.code === 'auth/email-already-in-use') {

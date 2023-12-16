@@ -4,8 +4,7 @@ import ChatInput from './ChatInput';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import {getMessagesRealTime} from '../firebaseFns';
 import {
-  Alert,
-  Image,
+   Image,
   StyleSheet,
   Text,
   TouchableOpacity,

@@ -13,20 +13,15 @@ import {
 import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
-import DocumentPicker from 'react-native-document-picker';
-import storage from '@react-native-firebase/storage';
+
+import useImageUploader from './UploadFeat/ImageUpload';
 
 const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
-  const [countMessage, setcountMessage] = useState(0);
-  const [imageData, setImageData] = useState(null);
-  const [fullImgRefPath, setFullImgRefPath] = useState('');
-  const [imgDownloadUrl, setImgDownloadUrl] = useState('');
-  console.log(
-    fullImgRefPath,
-    '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨',
-  );
+
   const uuid = uuidv4();
+  const {pickImage, imageData, fullImgRefPath, imgDownloadUrl} =
+    useImageUploader(uuid, ChatId, senderId, receiverId);
 
   const handleSend = () => {
     if (message.trim() !== '' && message && message) {
@@ -36,74 +31,8 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
         setMessage('');
       }
     }
-
-    setcountMessage(countMessage + 1);
   };
 
-  const pickImage = async () => {
-    Alert.alert('pickImage successfully called bro');
-    try {
-      const response = await DocumentPicker.pickSingle({
-        type: [
-          DocumentPicker.types.images,
-          DocumentPicker.types.audio,
-          DocumentPicker.types.zip,
-          DocumentPicker.types.doc,
-          DocumentPicker.types.pdf,
-          DocumentPicker.types.ppt,
-        ],
-        copyTo: 'cachesDirectory',
-      });
-
-      if (response) {
-        const fileUploadSize = response.size / 1024 / 1024;
-
-        if (fileUploadSize > 50) {
-          Alert.alert(`File Size more then ${fileUploadSize} Mb`);
-          return;
-        }
-        uploadImage(response.type);
-      }
-      uploadImage(response.type);
-      setImageData(response);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const uploadImage = async types => {
-    try {
-      const response = storage().ref(`/messageImages/${imageData.name}`);
-
-      const put = await response.putFile(imageData.fileCopyUri);
-
-      setFullImgRefPath(put.metadata.fullPath);
-      const url = await response.getDownloadURL();
-      setImgDownloadUrl(url);
-      createMessage(uuid, types, url, ChatId, senderId, receiverId);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // const handlecheck = async () => {
-  //   createMessage(
-  //     uuid,
-  //     'https://upload.wikimedia.org/wikipedia/commons/9/95/Salman_Khan_in_2023_%281%29_%28cropped%29.jpg',
-  //     ChatId,
-  //     senderId,
-  //     receiverId,
-  //   );
-  // };
-
-  // const deleteImage = async () => {
-  //   try {
-  //     const response = await storage().ref(fullImgRefPath).delete();
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
   return (
     <View style={styles.container}>
       <View style={styles.chatsLists}>
