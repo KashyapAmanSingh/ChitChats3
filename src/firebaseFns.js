@@ -37,7 +37,7 @@ export const signOut = async () => {
     removeId('UserId');
     onUserLogout();
     removeUserInfo();
-    return Alert.alert('User signed out!');
+    return console.log('User signed out!');
   } catch (error) {
     Alert.alert('Error signed out!');
   }

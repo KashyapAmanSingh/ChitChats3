@@ -15,8 +15,6 @@ export const getId = async key => {
   try {
     const id = await AsyncStorage.getItem(key);
     if (id !== null) {
-      console.log('Id retrieved successfully:  🛷🛷 🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺🛺', id);
-   
       return id;
     } else {
       console.log('No id found for key:', key);
