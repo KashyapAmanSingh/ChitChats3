@@ -5,12 +5,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../Home';
 import SignInForm from '../SignIn';
 import SignUpForm from '../SinUp';
-import UserLists from '../UserLists/UserLists';
-import ChatUi from '../ChatUi/ChatUi';
+ import ChatUi from '../ChatUi/ChatUi';
 import {
   ZegoUIKitPrebuiltCallInCallScreen,
   ZegoUIKitPrebuiltCallWaitingScreen,
 } from '@zegocloud/zego-uikit-prebuilt-call-rn';
+import UserLists from '../UserLists/UserLists';
 
 const Stack = createNativeStackNavigator();
 const Navigator = () => {

@@ -1,22 +1,39 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Text,
- } from 'react-native';
+import {View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
 import {ReadCollections, signOut} from '../firebaseFns';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 import {useNavigation} from '@react-navigation/native';
-
+import {getUserInfo, onUserLogin} from '../VideoCall/ZegoUtillity';
+import messaging from '@react-native-firebase/messaging';
+ 
 const UserLists = props => {
   const [userList, setUserList] = useState([]);
   const [userIds, setUserIds] = useState([]);
   const [personalIds, setPersonalIds] = useState('');
   const navigation = useNavigation();
+
+  const tokenhandler = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    console.log(token);
+  };
+
+  useEffect(() => {
+    // Simulated auto login if there is login info cache
+    getUserInfo().then(info => {
+      if (info) {
+        try {
+          onUserLogin(info.userIDZego, info.userNameZego);
+        } catch (error) {
+          console.log(error, error.message);
+        }
+      } else {
+        navigation.navigate('SignInForm');
+      }
+    });
+  }, []);
   useEffect(() => {
     const fetchUsers = async () => {
       const {userList: users, userId} = await ReadCollections('users');
@@ -30,8 +47,7 @@ const UserLists = props => {
   }, []);
 
   const SignOuthandler = () => {
-    navigation.navigate('Home');
-    signOut();
+    signOut(navigation);
   };
 
   return (
@@ -53,7 +69,12 @@ const UserLists = props => {
       <TouchableOpacity style={styles.button} onPress={SignOuthandler}>
         <Text style={[styles.buttonText, styles.SignInFormText]}>Sign Out</Text>
       </TouchableOpacity>
-    </>
+      <TouchableOpacity style={styles.button} onPress={tokenhandler}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>
+          get token
+        </Text>
+      </TouchableOpacity>
+     </>
   );
 };
 
@@ -83,7 +104,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: 27,
     fontWeight: 'bold',
-  
   },
   userItem: {
     padding: 16,

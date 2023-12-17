@@ -4,12 +4,13 @@ import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import {getId} from './AsyncStorageUtility/AsyncUtility';
 import {signOut} from './firebaseFns';
+import UserLists from './UserLists/UserLists';
 
 const Home = props => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  // Handle user state changes
+  const [userId, setUserId] = useState();
   function onAuthStateChanged() {
     setUser(user);
     if (initializing) {
@@ -24,10 +25,9 @@ const Home = props => {
           return;
         }
         if (storedId) {
-          signOut();
+          setUserId(storedId);
         }
-        Alert.alert('User ainged out initially');
-      } catch (error) {
+       } catch (error) {
         console.error('Error fetching data:', error);
       }
     }
@@ -44,7 +44,9 @@ const Home = props => {
     return null;
   }
 
-  return (
+  return userId ? (
+    <UserLists />
+  ) : (
     <View style={styles.HomeContainer}>
       <TouchableOpacity
         style={styles.button}
