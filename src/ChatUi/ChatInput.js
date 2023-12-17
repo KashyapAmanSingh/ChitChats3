@@ -18,7 +18,7 @@ import pickImage from './UploadFeat/ImageUpload';
 
 const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
-
+ 
   const uuid = uuidv4();
 
   const handleSend = () => {

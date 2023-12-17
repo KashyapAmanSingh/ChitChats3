@@ -34,8 +34,7 @@ const pickImage = async (uuid, ChatId, senderId, receiverId) => {
           const put = await reference.putFile(fileCopyUri);
 
           const url = await reference.getDownloadURL();
-          // Assuming you have a createMessage function
-          if (uuid && type && url && ChatId && senderId && receiverId) {
+           if (uuid && type && url && ChatId && senderId && receiverId) {
             createMessage(uuid, type, url, ChatId, senderId, receiverId);
           }
         } catch (err) {
