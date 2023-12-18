@@ -11,6 +11,7 @@ import {
 import {
   ReadCollections,
   createToken,
+  sendFCMMessage,
   signOut,
   tokenhandler,
   updateUser,
@@ -19,7 +20,7 @@ import {getId, storeId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 import {useNavigation} from '@react-navigation/native';
 import {getUserInfo, onUserLogin} from '../VideoCall/ZegoUtillity';
-
+ 
 const UserLists = props => {
   const [userList, setUserList] = useState([]);
   const [userIds, setUserIds] = useState([]);
@@ -33,11 +34,12 @@ const UserLists = props => {
 
     // const docsIDs = await getId('UserId');
     // updateUser(docsIDs);
-    const token = await tokenhandler();
+    // const token = await tokenhandler();
 
-    if (token) {
-      createToken(token);
-    }
+    // if (token) {
+    //   createToken(token);
+    // }
+    sendFCMMessage('ewGEj2FnSzenylAZYvTsNC:APA91bEPiWqk6SIKivh0kOZcYTHyihVGVMsBw4A8mj1ApxX1Abgb_Kgu-PMnKIBNzhFSBOcd7tJ4Ji3b4gL8dtSMxaxZDI592zDZ-d3mmGnmqrziXPyUl7IOMJ1zozC-eqtcyOV9q4J8')
   };
 
   useEffect(() => {

@@ -10,15 +10,20 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import {createMessage} from '../firebaseFns';
+import {createMessage, deleteMessage, updateMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
- 
+
 import pickImage from './UploadFeat/ImageUpload';
+import UpdateMsg from './Update';
 
 const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
- 
+  const [messageedit, setMessageditStatus] = useState(false);
+  const [messageeditText, setMessagedit] = useState('');
+
+  const [messageId, setMessageId] = useState(0);
+  console.log(getmessage);
   const uuid = uuidv4();
 
   const handleSend = () => {
@@ -33,6 +38,13 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const uploadImagehandler = () => {
     pickImage(uuid, ChatId, senderId, receiverId);
   };
+  const handleDelete = (id, messageEditing) => {
+    Alert.alert(id, message);
+    // deleteMessage(id,ChatId);
+    setMessageditStatus(true);
+    setMessagedit(messageEditing);
+    setMessageId(id);
+  };
 
   return (
     <View style={styles.container}>
@@ -46,11 +58,19 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
                   <View>
                     {item.fileType === 'Text' ? (
                       <Text
-                        style={[styles.ChatMessage, styles.ChatMessageSender]}>
+                        onLongPress={() =>
+                          handleDelete(item.ChatId, item.message)
+                        }
+                        style={[
+                          styles.ChatMessage,
+                          styles.ChatMessageSender,
+                          styles.chatTests,
+                        ]}>
                         {item.message}
                       </Text>
                     ) : item.fileType === 'image/jpeg' ? (
-                      <TouchableOpacity style={styles.ChatMessageSender}>
+                      <TouchableOpacity
+                        style={[styles.ChatMessageSender, styles.chatTests]}>
                         <Image
                           source={{uri: item.message}}
                           style={[styles.ChatImages]}
@@ -83,6 +103,10 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
             keyExtractor={(item, index) => index.toString()}
           />
         )}
+
+        {messageedit ? (
+          <UpdateMsg id={messageId} chatId={ChatId} message={messageeditText} setMessageditStatus={setMessageditStatus}/>
+        ) : null}
       </View>
 
       <View style={styles.InputContainer}>
@@ -105,6 +129,9 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+          <Text style={styles.sendButtonText}>Send</Text>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -124,6 +151,9 @@ const styles = StyleSheet.create({
   chatsLists: {
     backgroundColor: 'white',
     flex: 9,
+  },
+  chatTests: {
+    backgroundColor: 'red',
   },
   ChatMessage: {
     fontSize: 25,

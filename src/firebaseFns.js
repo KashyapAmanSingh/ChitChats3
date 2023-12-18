@@ -42,9 +42,9 @@ export const signOut = async navigation => {
     removeId('DeviceToken');
     onUserLogout();
     removeUserInfo();
-    if (docsID) {
-      updateUser(docsID);
-    }
+    // if (docsID) {
+    //   updateUser(docsID);
+    // }
 
     navigation.navigate('Home');
     return console.log('User signed out!');
@@ -232,5 +232,66 @@ export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
     console.error('Error while getting messages:', error);
   }
 };
+
+export const deleteMessage = async (id, ChatId) => {
+  firestore()
+    .collection('messages')
+    .doc(ChatId)
+    .collection('MessageLists')
+    .doc(id)
+    .delete()
+    .then(() => {
+      console.log('User deleted!');
+    });
+};
+
+export const updateMessage = async (id, chatId, message) => {
+  console.log(
+    'In firebase fns    updateMessage called 💎💎💎 ',
+    id,
+    chatId,
+    message,
+  );
+
+  firestore()
+    .collection('messages')
+    .doc(chatId)
+    .collection('MessageLists')
+    .doc(id)
+    .update({
+      message: message,
+    });
+};
+
+
+export const sendFCMMessage=async(token)=> {
+  const data = JSON.stringify({
+    data: {},
+    notification: {
+      body: 'click to open check Post',
+      title: 'New Post Added',
+    },
+    to: token,
+  });
+
+  const config = {
+    method: 'POST',
+    headers: {
+      Authorization:
+        'key=AAAAV4zOXww:APA91bHUoMZY7aLmFzDoxh1l98CpvDdEmB28K79A1ktShkNAj9RWVfF4fgSTDzCUGyUv_vcpoul2AF4qpV6SqXZ03dcU4pMhKbw49QXqpywTywrXTH6Eq2TrijDrL1TKUqV2alXveJac',
+      'Content-Type': 'application/json',
+    },
+    body: data,
+  };
+
+  try {
+    const response = await fetch('https://fcm.googleapis.com/fcm/send', config);
+    const responseData = await response.json();
+    console.log('FCM message sent successfully:', responseData);
+  } catch (error) {
+    console.error('Error sending FCM message:', error);
+  }
+}
+
 
 export default createUser;
