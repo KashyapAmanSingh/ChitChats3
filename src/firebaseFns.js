@@ -2,9 +2,10 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {Alert} from 'react-native';
-import {removeId} from './AsyncStorageUtility/AsyncUtility';
+import {getId, removeId} from './AsyncStorageUtility/AsyncUtility';
 import {onSnapshot} from 'firebase/firestore';
 import {onUserLogout, removeUserInfo} from './VideoCall/ZegoUtillity';
+import messaging from '@react-native-firebase/messaging';
 
 export const signUpfn = async (email, password) => {
   try {
@@ -31,12 +32,21 @@ export const signUpfn = async (email, password) => {
   }
 };
 
-export const signOut = async () => {
+export const signOut = async navigation => {
+  const docsID = await getId('UserId');
+
   try {
     await auth().signOut();
     removeId('UserId');
+
+    removeId('DeviceToken');
     onUserLogout();
     removeUserInfo();
+    if (docsID) {
+      updateUser(docsID);
+    }
+
+    navigation.navigate('Home');
     return console.log('User signed out!');
   } catch (error) {
     Alert.alert('Error signed out!');
@@ -49,7 +59,7 @@ export const signInfn = async (email, password) => {
       email,
       password,
     );
-     const user = userCredential.user;
+    const user = userCredential.user;
     return user.uid;
   } catch (error) {
     if (error.code === 'auth/email-already-in-use') {
@@ -62,6 +72,44 @@ export const signInfn = async (email, password) => {
 
     console.error(error);
     throw error; // Rethrow the error to handle it at the calling location
+  }
+};
+
+export const updateUser = async (
+  docsID,
+  deviceToken = null,
+  status = 'Offline',
+) => {
+  firestore()
+    .collection('users')
+    .doc(docsID)
+    .update({
+      token: deviceToken,
+      status: status,
+    })
+    .then(() => {
+      console.log('User token updated!');
+    });
+};
+
+export const tokenhandler = async () => {
+  await messaging().registerDeviceForRemoteMessages();
+  const token = await messaging().getToken();
+  console.log('Token is htis here 💝💝💝💝💝💝💝💝💝💝', token);
+  return token;
+};
+
+export const createToken = async token => {
+  try {
+    const db = firestore();
+    await db
+      .collection('token')
+      .doc('TokenStore')
+      .update({
+        fcmTokens: firestore.FieldValue.arrayUnion(token),
+      });
+  } catch (error) {
+    Alert.alert(error.message, 'In the create token');
   }
 };
 
@@ -126,7 +174,6 @@ export const createMessage = async (
   senderId,
   receiverId,
 ) => {
- 
   try {
     // Access the Firestore database
     const db = firestore();

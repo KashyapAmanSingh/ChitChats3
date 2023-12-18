@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import createUser, {signUpfn} from './firebaseFns';
+import createUser, {createToken, signUpfn, tokenhandler} from './firebaseFns';
 
 const SignUpForm = props => {
   const [email, setEmail] = useState('');
@@ -22,6 +22,7 @@ const SignUpForm = props => {
   const [name, setName] = useState('');
 
   const handleSignUp = async () => {
+    const token = await tokenhandler();
     if (confirmPassword !== password) {
       return Alert.alert('Please enter correct your password');
     }
@@ -36,6 +37,10 @@ const SignUpForm = props => {
     setConfirmPassword('');
     setName('');
     props.navigation.navigate('SignInForm');
+ 
+    if (token) {
+      createToken(token);
+    }
   };
 
   return (

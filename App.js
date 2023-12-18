@@ -13,9 +13,7 @@ const App = () => {
     requestPermission();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('🦻🦻🦻🦻 remoteMessage', JSON.stringify(remoteMessage));
-      if (remoteMessage) {
-        DisplayNotification(remoteMessage);
-      }
+      DisplayNotification(remoteMessage);
       console.log('🦽 🦽 🦽 🦽 🦽 🦽🦽After 🦽 remoteMessage');
 
       Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
@@ -23,21 +21,48 @@ const App = () => {
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('🦻🦻remoteMessage', JSON.stringify(remoteMessage));
-      if (remoteMessage) {
-        DisplayNotification(remoteMessage);
-      }
+      DisplayNotification(remoteMessage);
       console.log('🦽 🦽 🦽 🦽 🦽 🦽🦽After 🦽 remoteMessage');
 
       Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
+    const handleNotificationOpenedApp = remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+    };
 
+    const handleInitialNotification = async () => {
+      const initialNotification = await messaging().getInitialNotification();
+
+      if (initialNotification) {
+        console.log(
+          'Notification caused app to open from quit state:',
+          initialNotification.notification,
+        );
+      }
+    };
+
+    handleInitialNotification();
+
+    messaging().onNotificationOpenedApp(handleNotificationOpenedApp);
+
+ 
     return unsubscribe;
   }, []);
 
   const requestPermission = async () => {
-    await messaging().requestPermission();
-  };
+    const authStatus = await messaging().requestPermission();
 
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('🧠 Authorization status:', authStatus);
+    }
+  };
   async function DisplayNotification(remoteMessage) {
     Alert.alert('🦻Display Notification🦻', JSON.stringify(remoteMessage));
     console.log(JSON.stringify(remoteMessage), '🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻');
@@ -67,8 +92,8 @@ const App = () => {
         ],
       },
     });
+  
   }
-
   return (
     <NavigationContainer>
       <ZegoCallInvitationDialog />

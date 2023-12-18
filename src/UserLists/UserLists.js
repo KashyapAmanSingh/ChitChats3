@@ -1,23 +1,43 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
-import {ReadCollections, signOut} from '../firebaseFns';
-import {getId} from '../AsyncStorageUtility/AsyncUtility';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Text,
+  Alert,
+} from 'react-native';
+import {
+  ReadCollections,
+  createToken,
+  signOut,
+  tokenhandler,
+  updateUser,
+} from '../firebaseFns';
+import {getId, storeId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 import {useNavigation} from '@react-navigation/native';
 import {getUserInfo, onUserLogin} from '../VideoCall/ZegoUtillity';
-import messaging from '@react-native-firebase/messaging';
- 
+
 const UserLists = props => {
   const [userList, setUserList] = useState([]);
   const [userIds, setUserIds] = useState([]);
   const [personalIds, setPersonalIds] = useState('');
   const navigation = useNavigation();
 
-  const tokenhandler = async () => {
-    await messaging().registerDeviceForRemoteMessages();
-    const token = await messaging().getToken();
-    console.log(token);
+  const tokenhand = async () => {
+    // await messaging().registerDeviceForRemoteMessages();
+    // const token = await messaging().getToken();
+    // console.log('Token is htis here 💝💝💝💝💝💝💝💝💝💝',token);
+
+    // const docsIDs = await getId('UserId');
+    // updateUser(docsIDs);
+    const token = await tokenhandler();
+
+    if (token) {
+      createToken(token);
+    }
   };
 
   useEffect(() => {
@@ -69,12 +89,12 @@ const UserLists = props => {
       <TouchableOpacity style={styles.button} onPress={SignOuthandler}>
         <Text style={[styles.buttonText, styles.SignInFormText]}>Sign Out</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={tokenhandler}>
+      <TouchableOpacity style={styles.button} onPress={tokenhand}>
         <Text style={[styles.buttonText, styles.SignInFormText]}>
           get token
         </Text>
       </TouchableOpacity>
-     </>
+    </>
   );
 };
 

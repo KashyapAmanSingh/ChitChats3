@@ -6,8 +6,14 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import {ReadCollectionsById, signInfn} from './firebaseFns';
+import {
+  ReadCollectionsById,
+  signInfn,
+  tokenhandler,
+  updateUser,
+} from './firebaseFns';
 import {storeId} from './AsyncStorageUtility/AsyncUtility';
 import {onUserLogin, storeUserInfo} from './VideoCall/ZegoUtillity';
 import {useNavigation} from '@react-navigation/native';
@@ -19,13 +25,17 @@ const SignInForm = props => {
   const handleSignIn = async () => {
     try {
       const SecurityId = await signInfn(email, password);
+      const deviceToken = await tokenhandler();
+      const docsID = SecurityId;
+      const status = 'Online';
+      if (docsID && deviceToken) {
+        updateUser(docsID, deviceToken, status);
+        storeId({key: 'DeviceToken', id: deviceToken});
+      }
 
-      if (SecurityId) {
-        storeId({key: 'UserId', id: SecurityId});
-        const {userList: users} = await ReadCollectionsById(
-          'users',
-          SecurityId,
-        );
+      if (docsID) {
+        storeId({key: 'UserId', id: docsID});
+        const {userList: users} = await ReadCollectionsById('users', docsID);
 
         if (users && users.length > 0) {
           const userNameZego = users[0].name;
@@ -41,6 +51,8 @@ const SignInForm = props => {
       console.error('Error during sign in:', error);
     }
   };
+
+  // tokenhandler
 
   return (
     <View style={styles.container}>
