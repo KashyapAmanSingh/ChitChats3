@@ -12,8 +12,7 @@ import ZegoUIKitPrebuiltCallService from '@zegocloud/zego-uikit-prebuilt-call-rn
 import * as ZIM from 'zego-zim-react-native';
 import * as ZPNs from 'zego-zpns-react-native';
 import notifee, {EventType} from '@notifee/react-native';
-import Cam from './src/ChatUi/Camera/Cam';
-  // import {PermissionsAndroid} from 'react-native';
+// import {PermissionsAndroid} from 'react-native';
 // PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 ZegoUIKitPrebuiltCallService.useSystemCallingUI([ZIM, ZPNs]);
 
@@ -33,4 +32,4 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
-AppRegistry.registerComponent(appName, () =>Cam);
+AppRegistry.registerComponent(appName, () => App);

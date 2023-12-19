@@ -8,8 +8,7 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
-import {ReadCollections, signOut} from '../firebaseFns';
+ import {ReadCollections, signOut} from '../firebaseFns';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 import {useNavigation} from '@react-navigation/native';
@@ -51,13 +50,8 @@ const UserLists = props => {
   const SignOuthandler = () => {
     signOut(navigation);
   };
-  const copyToClipboard = () => {
-    Clipboard.setString('hello world');
-  };
-  const fetchCopiedText = async () => {
-    const text = await Clipboard.getString();
-    setCopiedText(text);
-  };
+  
+ 
   return (
     <>
       <View style={styles.UserListsUi}>

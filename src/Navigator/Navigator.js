@@ -11,6 +11,7 @@ import {
   ZegoUIKitPrebuiltCallWaitingScreen,
 } from '@zegocloud/zego-uikit-prebuilt-call-rn';
 import UserLists from '../UserLists/UserLists';
+import CameraPhoto from '../ChatUi/Camera/Cam';
 
 const Stack = createNativeStackNavigator();
 const Navigator = () => {
@@ -56,6 +57,14 @@ const Navigator = () => {
         component={UserLists}
         options={{
           title: 'ChitChat 0.3',
+        }}
+      />
+
+      <Stack.Screen
+        name="CameraPhoto"
+        component={CameraPhoto}
+        options={{
+          title: 'ChitChat 0.3 camera preview',
         }}
       />
 

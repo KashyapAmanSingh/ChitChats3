@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 
 import React, {useEffect, useRef, useState} from 'react';
@@ -13,7 +14,7 @@ import {
 } from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 
-function Cam() {
+function CameraPhoto() {
   const camera = useRef(null);
   const devices = useCameraDevices();
   const device = devices.back;
@@ -177,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Cam;
+export default CameraPhoto;

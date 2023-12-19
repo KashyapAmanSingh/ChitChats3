@@ -8,6 +8,7 @@ import {
   StyleSheet,
   FlatList,
   Image,
+  Button,
 } from 'react-native';
 import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
@@ -15,6 +16,7 @@ import {v4 as uuidv4} from 'uuid';
 
 import pickImage from './UploadFeat/ImageUpload';
 import ChatTextEdit from './ChatText/ChatTextEdit';
+import { useNavigation } from '@react-navigation/native';
 
 const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
@@ -23,6 +25,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
 
   const [messageId, setMessageId] = useState(0);
   const uuid = uuidv4();
+  const navigation=useNavigation()
 
   const handleSend = () => {
     if (message.trim() !== '' && message && message) {
@@ -41,7 +44,6 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
     setMessagedit(messageEditing);
     setMessageId(id);
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.chatsLists}>
@@ -135,6 +137,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
             setMessageditStatus={setMessageditStatus}
           />
         ) : null}
+        <Button title="camera" onPress={navigation.navigate('CameraPhoto')} />
       </View>
 
       <View style={styles.InputContainer}>
