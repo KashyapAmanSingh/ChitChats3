@@ -80,16 +80,18 @@ export const updateUser = async (
   deviceToken = null,
   status = 'Offline',
 ) => {
-  firestore()
-    .collection('users')
-    .doc(docsID)
-    .update({
-      token: deviceToken,
-      status: status,
-    })
-    .then(() => {
-      console.log('User token updated!');
-    });
+  if (docsID && deviceToken) {
+    firestore()
+      .collection('users')
+      .doc(docsID)
+      .update({
+        token: deviceToken,
+        status: status,
+      })
+      .then(() => {
+        console.log('User token updated!');
+      });
+  }
 };
 
 export const tokenhandler = async () => {
@@ -250,12 +252,12 @@ export const getMessagesRealTime = async (ChattingId, getChatMessage) => {
   }
 };
 
-export const deleteMessage = async (id, ChatId) => {
+export const deleteMessage = async (messageId, chatId) => {
   firestore()
     .collection('messages')
-    .doc(ChatId)
+    .doc(chatId)
     .collection('MessageLists')
-    .doc(id)
+    .doc(messageId)
     .delete()
     .then(() => {
       console.log('User deleted!');
@@ -280,7 +282,7 @@ export const updateMessage = async (id, chatId, message) => {
     });
 };
 
-export const sendFCMMessage = async (usertoken, userName, userPhone) => {
+export const sendFCMMessag = async (usertoken, userName, userPhone) => {
   const data = JSON.stringify({
     data: {},
     notification: {
@@ -288,6 +290,36 @@ export const sendFCMMessage = async (usertoken, userName, userPhone) => {
       title: `${userPhone} is online now`,
     },
     to: usertoken,
+  });
+
+  const config = {
+    method: 'POST',
+    headers: {
+      Authorization:
+        'key=AAAAV4zOXww:APA91bHUoMZY7aLmFzDoxh1l98CpvDdEmB28K79A1ktShkNAj9RWVfF4fgSTDzCUGyUv_vcpoul2AF4qpV6SqXZ03dcU4pMhKbw49QXqpywTywrXTH6Eq2TrijDrL1TKUqV2alXveJac',
+      'Content-Type': 'application/json',
+    },
+    body: data,
+  };
+
+  try {
+    const response = await fetch('https://fcm.googleapis.com/fcm/send', config);
+    const responseData = await response.json();
+    console.log('FCM message sent successfully:', responseData);
+  } catch (error) {
+    console.error('Error sending FCM message:', error);
+  }
+};
+
+export const sendFCMMessage = async token => {
+  console.log('token hs yes', token );
+  const data = JSON.stringify({
+    data: {},
+    notification: {
+      body: `Click to Chat Anonymous`,
+      title: `Anonymous is online now`,
+    },
+    to: token,
   });
 
   const config = {

@@ -5,7 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../Home';
 import SignInForm from '../SignIn';
 import SignUpForm from '../SinUp';
- import ChatUi from '../ChatUi/ChatUi';
+import ChatUi from '../ChatUi/ChatUi';
 import {
   ZegoUIKitPrebuiltCallInCallScreen,
   ZegoUIKitPrebuiltCallWaitingScreen,
@@ -32,7 +32,7 @@ const Navigator = () => {
         name="Home"
         component={Home}
         options={{
-          title: 'Users Home',
+          title: 'ChitChat 0.3',
           headerTitleStyle: {fontSize: 30},
           headerTintColor: 'white',
         }}

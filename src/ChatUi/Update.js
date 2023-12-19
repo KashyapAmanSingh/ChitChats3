@@ -3,24 +3,13 @@ import {Button, StyleSheet, TextInput, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {updateMessage} from '../firebaseFns';
 
-const UpdateMsg = ({id, chatId, message, setMessageditStatus}) => {
-  console.log(
-    message,
-    'updateMessage called initially man  💎💎💎🗽🗽🗽🗽🗽🗽🗽🗽',
-    id,
-    chatId,
-  );
+const UpdateMsg = ({id, chatId, message, setUpdateStatus}) => {
   const [editedMessage, setEditedMessage] = useState('');
   const handleEdit = () => {
     updateMessage(id, chatId, editedMessage);
-    console.log(
-      'Ateter succesfully updateMessage called 💎💎💎💎⛳⛳⛳⛳⛳⛳⛳⛳',
-      id,
-      chatId,
-      message,
-    );
+
     setEditedMessage('');
-    setMessageditStatus(false);
+    setUpdateStatus(false);
   };
 
   useEffect(() => {
@@ -35,7 +24,7 @@ const UpdateMsg = ({id, chatId, message, setMessageditStatus}) => {
         style={styles.input}
       />
       <Button title="Edit" onPress={handleEdit} />
-      <Button title="CancelEdit" onPress={() => setMessageditStatus(false)} />
+      <Button title="CancelEdit" onPress={() => setUpdateStatus(false)} />
     </View>
   );
 };

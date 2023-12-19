@@ -3,13 +3,7 @@ import React, {useEffect, useState} from 'react';
 import ChatInput from './ChatInput';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import {getMessagesRealTime} from '../firebaseFns';
-import {
-   Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CallingBtn from '../CallingBtn/voiceCallingBtn';
 import {useNavigation} from '@react-navigation/native';
 
@@ -22,6 +16,7 @@ const ChatUi = ({route}) => {
 
   const userPhone = route.params.userPhone;
   const userName = route.params.userName;
+  const userStatus = route.params.userStatus;
   const navigation = useNavigation();
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +40,6 @@ const ChatUi = ({route}) => {
       getMessagesRealTime(ChatId, getChatMessage);
     }
   }, [ChatId]);
-  
 
   return (
     <View style={styles.container}>
@@ -64,8 +58,13 @@ const ChatUi = ({route}) => {
               style={styles.UserChatImage}
               source={require('../assets/ProfileIcon.gif')}
             />
-
-            <Text style={styles.ChattingUserName}>{ userName.slice(0, 8)}...</Text>
+            <Text style={styles.ChattingUserName} selectable={true}>
+              {userName.slice(0, 8)}...
+              {'\n'}
+              <Text style={styles.UserStatus} selectable={true}>
+                {userStatus}
+              </Text>
+            </Text>
 
             <CallingBtn userID={userPhone} userName={userName} />
           </View>
@@ -99,12 +98,11 @@ const styles = StyleSheet.create({
     flex: 0.2,
     alignContent: 'flex-end',
     justifyContent: 'center',
-  
   },
   ChatInput: {
     flex: 2.1,
-   
   },
+  UserStatus: {fontSize: 13, color: 'white', marginBottom: 0},
   ChattingUserName: {
     color: 'white',
     width: '50%',

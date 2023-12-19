@@ -8,14 +8,13 @@ import {
   StyleSheet,
   FlatList,
   Image,
-  Alert,
 } from 'react-native';
-import {createMessage, deleteMessage, updateMessage} from '../firebaseFns';
+import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 
 import pickImage from './UploadFeat/ImageUpload';
-import UpdateMsg from './Update';
+import ChatTextEdit from './ChatText/ChatTextEdit';
 
 const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
@@ -23,7 +22,6 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [messageeditText, setMessagedit] = useState('');
 
   const [messageId, setMessageId] = useState(0);
-  console.log(getmessage);
   const uuid = uuidv4();
 
   const handleSend = () => {
@@ -38,9 +36,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const uploadImagehandler = () => {
     pickImage(uuid, ChatId, senderId, receiverId);
   };
-  const handleDelete = (id, messageEditing) => {
-    Alert.alert(id, message);
-    // deleteMessage(id,ChatId);
+  const handleEdit = (id, messageEditing) => {
     setMessageditStatus(true);
     setMessagedit(messageEditing);
     setMessageId(id);
@@ -52,25 +48,36 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
         {getmessage && (
           <FlatList
             data={getmessage}
-            renderItem={({item, index}) => (
+            renderItem={({item}) => (
               <>
                 {item.senderId === senderId ? (
-                  <View>
+                  <View
+                    style={
+                      messageedit && messageId === item.ChatId
+                        ? styles.chatContainerEdit
+                        : null
+                    }>
                     {item.fileType === 'Text' ? (
                       <Text
+                        selectable={true}
                         onLongPress={() =>
-                          handleDelete(item.ChatId, item.message)
+                          handleEdit(item.ChatId, item.message)
                         }
                         style={[
+                          messageedit && messageId === item.ChatId
+                            ? styles.chatEdit
+                            : null,
                           styles.ChatMessage,
                           styles.ChatMessageSender,
-                          styles.chatTests,
                         ]}>
                         {item.message}
                       </Text>
                     ) : item.fileType === 'image/jpeg' ? (
                       <TouchableOpacity
-                        style={[styles.ChatMessageSender, styles.chatTests]}>
+                        style={[styles.ChatMessageSender, styles.chatTests]}
+                        onLongPress={() =>
+                          handleEdit(item.ChatId, item.message)
+                        }>
                         <Image
                           source={{uri: item.message}}
                           style={[styles.ChatImages]}
@@ -79,24 +86,40 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
                     ) : null}
                   </View>
                 ) : (
-                  <>
+                  <View
+                    style={
+                      messageedit && messageId === item.ChatId
+                        ? styles.chatContainerEdit
+                        : null
+                    }>
                     {item.fileType === 'Text' ? (
                       <Text
+                        selectable={true}
+                        onLongPress={() =>
+                          handleEdit(item.ChatId, item.message)
+                        }
                         style={[
+                          messageedit && messageId === item.ChatId
+                            ? styles.chatEdit
+                            : null,
                           styles.ChatMessage,
                           styles.ChatMessageReceiver,
                         ]}>
                         {item.message}
                       </Text>
                     ) : item.fileType === 'image/jpeg' ? (
-                      <TouchableOpacity style={styles.ChatMessageReceiver}>
+                      <TouchableOpacity
+                        style={[styles.ChatMessageReceiver, styles.chatTests]}
+                        onLongPress={() =>
+                          handleEdit(item.ChatId, item.message)
+                        }>
                         <Image
                           source={{uri: item.message}}
                           style={[styles.ChatImages]}
                         />
                       </TouchableOpacity>
                     ) : null}
-                  </>
+                  </View>
                 )}
               </>
             )}
@@ -105,7 +128,12 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
         )}
 
         {messageedit ? (
-          <UpdateMsg id={messageId} chatId={ChatId} message={messageeditText} setMessageditStatus={setMessageditStatus}/>
+          <ChatTextEdit
+            id={messageId}
+            chatId={ChatId}
+            message={messageeditText}
+            setMessageditStatus={setMessageditStatus}
+          />
         ) : null}
       </View>
 
@@ -152,17 +180,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 9,
   },
-  chatTests: {
-    backgroundColor: 'red',
+  chatContainerEdit: {
+    backgroundColor: '#5C7CFA80',
+    color: 'white',
+    borderWidth: 1,
+    borderColor: '#474FB6',
+    borderRadius: 7,
+  },
+  chatEdit: {
+    backgroundColor: '#5C7CFA',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 10,
+    color: 'white',
   },
   ChatMessage: {
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: 'bold',
-    backgroundColor: 'white',
-    marginVertical: 9,
+    marginVertical: 7,
 
     flexWrap: 'wrap',
-    // width: 190,
     justifyContent: 'center',
     borderWidth: 2,
     borderColor: '#474FB6',
@@ -171,19 +208,26 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 28,
     paddingHorizontal: 15,
-    color: '#474FB6',
   },
   ChatMessageSender: {
     alignSelf: 'flex-end',
+    marginLeft: 70,
+    marginRight: 12,
+    color: '#474FB6',
+    backgroundColor: '#339AF01F',
   },
   ChatMessageReceiver: {
     alignSelf: 'flex-start',
+    marginLeft: 12,
+    marginRight: 70,
+    color: '#474FB6',
+
+    backgroundColor: '#339AF01F',
   },
   ChatImages: {
     width: 220,
     height: 250,
-    marginHorizontal: 30,
-    marginBottom: 30,
+
     borderWidth: 2,
     borderColor: '#474FB6',
     borderRadius: 15,

@@ -6,12 +6,10 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import {
   OnlineInformation,
   ReadCollectionsById,
-  getToken,
   signInfn,
   tokenhandler,
   updateUser,

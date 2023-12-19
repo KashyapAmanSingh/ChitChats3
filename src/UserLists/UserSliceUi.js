@@ -1,5 +1,12 @@
 /* eslint-disable prettier/prettier */
-import {Alert, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import CallingBtn from '../CallingBtn/voiceCallingBtn';
@@ -10,23 +17,30 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
       userId: userIds[index],
       userPhone: user.phone,
       userName: user.name,
+      userStatus :user.status 
     });
   };
-   const personalProfileIndex = userIds.indexOf(personalIds);
+  const personalProfileIndex = userIds.indexOf(personalIds);
   if (personalProfileIndex === index) {
     return;
   }
 
   return (
     <TouchableOpacity onPress={handleRouteSend}>
-
       <View style={styles.userItem}>
         <View style={styles.iconContainer}>
           <Image source={require('../assets/ProfileIcon.gif')} />
-        </View>
 
-        <Text style={styles.userItemText}>{user.name.slice(0, 8) }...</Text>
-       <CallingBtn userID={user.phone} userName={user.name} />
+          <Text
+            style={
+              user.status === 'Online' ? styles.onlineDot : styles.OfflineDot
+            }
+          />
+        </View>
+        {/* <Text style={styles.userItemText}>{user.status }...</Text> */}
+
+        <Text style={styles.userItemText}>{user.name.slice(0, 8)}...</Text>
+        <CallingBtn userID={user.phone} userName={user.name} />
       </View>
     </TouchableOpacity>
   );
@@ -48,8 +62,24 @@ const styles = StyleSheet.create({
     height: 80,
     width: 410,
   },
+  onlineDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#99FF00',
+    marginLeft: 2,
+  },
+  OfflineDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#697754',
+    marginLeft: 2,
+  },
   iconContainer: {
     marginRight: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   userItemText: {
     color: '#474FB6',

@@ -6,25 +6,18 @@ import Navigator from './src/Navigator/Navigator';
 import notifee from '@notifee/react-native';
 
 import messaging from '@react-native-firebase/messaging';
-import {Alert} from 'react-native';
 
 const App = () => {
   useEffect(() => {
     requestPermission();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('🦻🦻🦻🦻 remoteMessage', JSON.stringify(remoteMessage));
       DisplayNotification(remoteMessage);
-      console.log('🦽 🦽 🦽 🦽 🦽 🦽🦽After 🦽 remoteMessage');
-
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('🦻🦻remoteMessage', JSON.stringify(remoteMessage));
       DisplayNotification(remoteMessage);
-      console.log('🦽 🦽 🦽 🦽 🦽 🦽🦽After 🦽 remoteMessage');
 
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
     const handleNotificationOpenedApp = remoteMessage => {
       console.log(
@@ -48,7 +41,6 @@ const App = () => {
 
     messaging().onNotificationOpenedApp(handleNotificationOpenedApp);
 
- 
     return unsubscribe;
   }, []);
 
@@ -63,9 +55,8 @@ const App = () => {
       console.log('🧠 Authorization status:', authStatus);
     }
   };
+
   async function DisplayNotification(remoteMessage) {
-    Alert.alert('🦻Display Notification🦻', JSON.stringify(remoteMessage));
-    console.log(JSON.stringify(remoteMessage), '🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻🦻');
     // Create a channel
     const channelId = await notifee.createChannel({
       id: 'default',
@@ -92,8 +83,9 @@ const App = () => {
         ],
       },
     });
-  
   }
+ 
+
   return (
     <NavigationContainer>
       <ZegoCallInvitationDialog />

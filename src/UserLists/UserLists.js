@@ -8,48 +8,19 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import {
-  OnlineInformation,
-  ReadCollections,
-  createToken,
-  getToken,
-  sendFCMMessage,
-  signOut,
-  tokenhandler,
-  updateUser,
-} from '../firebaseFns';
-import {getId, storeId} from '../AsyncStorageUtility/AsyncUtility';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {ReadCollections, signOut} from '../firebaseFns';
+import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 import {useNavigation} from '@react-navigation/native';
 import {getUserInfo, onUserLogin} from '../VideoCall/ZegoUtillity';
+import InternetMode from '../InternetMode/InternetMode';
 
 const UserLists = props => {
   const [userList, setUserList] = useState([]);
   const [userIds, setUserIds] = useState([]);
   const [personalIds, setPersonalIds] = useState('');
   const navigation = useNavigation();
-
-  const tokenhand = async () => {
-    // await messaging().registerDeviceForRemoteMessages();
-    // const token = await messaging().getToken();
-    // console.log('Token is htis here 💝💝💝💝💝💝💝💝💝💝',token);
-
-    // const docsIDs = await getId('UserId');
-    // updateUser(docsIDs);
-    // const token = await tokenhandler();
-
-    // if (token) {
-    //   createToken(token);
-    // }
-    const myToken = await tokenhandler();
-    if (myToken) {
-      // const tokens=await  getToken(myToken);
-      // console.log('Token is htis here🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅',tokens);
-    await  OnlineInformation(myToken, 'amsn', 'raman');
-      // createToken('1222222222sdffsddsdfssdfsadfsldfsldfshufshdfsdfssdfsdfasfasjl')
-    }
-    // sendFCMMessage('ewGEj2FnSzenylAZYvTsNC:APA91bEPiWqk6SIKivh0kOZcYTHyihVGVMsBw4A8mj1ApxX1Abgb_Kgu-PMnKIBNzhFSBOcd7tJ4Ji3b4gL8dtSMxaxZDI592zDZ-d3mmGnmqrziXPyUl7IOMJ1zozC-eqtcyOV9q4J8')
-  };
 
   useEffect(() => {
     // Simulated auto login if there is login info cache
@@ -80,7 +51,13 @@ const UserLists = props => {
   const SignOuthandler = () => {
     signOut(navigation);
   };
-
+  const copyToClipboard = () => {
+    Clipboard.setString('hello world');
+  };
+  const fetchCopiedText = async () => {
+    const text = await Clipboard.getString();
+    setCopiedText(text);
+  };
   return (
     <>
       <View style={styles.UserListsUi}>
@@ -100,11 +77,27 @@ const UserLists = props => {
       <TouchableOpacity style={styles.button} onPress={SignOuthandler}>
         <Text style={[styles.buttonText, styles.SignInFormText]}>Sign Out</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={tokenhand}>
+      {/* <TouchableOpacity style={styles.button} onPress={tokenhand}>
         <Text style={[styles.buttonText, styles.SignInFormText]}>
           get token
         </Text>
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.button} onPress={copyToClipboard}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>
+          get token
+        </Text>
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.button} onPress={copyToClipboard}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>
+          Click here to copy to Clipboard
+        </Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={fetchCopiedText}>
+        <Text style={[styles.buttonText, styles.SignInFormText]}>
+          View copied text
+        </Text>
+      </TouchableOpacity> */}
+      <InternetMode />
     </>
   );
 };
