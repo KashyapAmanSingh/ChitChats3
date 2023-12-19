@@ -34,7 +34,7 @@ export const signUpfn = async (email, password) => {
 
 export const signOut = async navigation => {
   const docsID = await getId('UserId');
-
+  const token = await tokenhandler();
   try {
     await auth().signOut();
     removeId('UserId');
@@ -42,9 +42,9 @@ export const signOut = async navigation => {
     removeId('DeviceToken');
     onUserLogout();
     removeUserInfo();
-    // if (docsID) {
-    //   updateUser(docsID);
-    // }
+    if (docsID && token) {
+      updateUser(docsID, token);
+    }
 
     navigation.navigate('Home');
     return console.log('User signed out!');
@@ -112,7 +112,24 @@ export const createToken = async token => {
     Alert.alert(error.message, 'In the create token');
   }
 };
+export const getToken = async myToken => {
+  try {
+    const db = firestore();
+    const res = await db.collection('token').doc('TokenStore').get();
+    if (res.exists) {
+      const allTokens = res.data().fcmTokens || [];
 
+      const otherTokens = allTokens.filter(token => token !== myToken);
+
+      return otherTokens;
+    } else {
+      console.log('TokenStore document does not exist');
+    }
+    console.log('TokenStore is here bro 🏮🏮🏮🏮🏮🏮🏮🏮🏮🏮🏮', res);
+  } catch (error) {
+    Alert.alert(error.message, 'In the create token');
+  }
+};
 export const createUser = async (
   collectionDocsName,
   uuid,
@@ -263,15 +280,14 @@ export const updateMessage = async (id, chatId, message) => {
     });
 };
 
-
-export const sendFCMMessage=async(token)=> {
+export const sendFCMMessage = async (usertoken, userName, userPhone) => {
   const data = JSON.stringify({
     data: {},
     notification: {
-      body: 'click to open check Post',
-      title: 'New Post Added',
+      body: `Click to Chat ${userName}`,
+      title: `${userPhone} is online now`,
     },
-    to: token,
+    to: usertoken,
   });
 
   const config = {
@@ -291,7 +307,15 @@ export const sendFCMMessage=async(token)=> {
   } catch (error) {
     console.error('Error sending FCM message:', error);
   }
-}
+};
 
+export const OnlineInformation = async (myToken, userName, userPhone) => {
+  const otherUsersToken = await getToken(myToken);
+  if (otherUsersToken) {
+    otherUsersToken.map(usertoken =>
+      sendFCMMessage(usertoken, userName, userPhone),
+    );
+  }
+};
 
 export default createUser;

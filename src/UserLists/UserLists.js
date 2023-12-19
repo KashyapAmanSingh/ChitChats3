@@ -9,8 +9,10 @@ import {
   Alert,
 } from 'react-native';
 import {
+  OnlineInformation,
   ReadCollections,
   createToken,
+  getToken,
   sendFCMMessage,
   signOut,
   tokenhandler,
@@ -20,7 +22,7 @@ import {getId, storeId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 import {useNavigation} from '@react-navigation/native';
 import {getUserInfo, onUserLogin} from '../VideoCall/ZegoUtillity';
- 
+
 const UserLists = props => {
   const [userList, setUserList] = useState([]);
   const [userIds, setUserIds] = useState([]);
@@ -39,7 +41,14 @@ const UserLists = props => {
     // if (token) {
     //   createToken(token);
     // }
-    sendFCMMessage('ewGEj2FnSzenylAZYvTsNC:APA91bEPiWqk6SIKivh0kOZcYTHyihVGVMsBw4A8mj1ApxX1Abgb_Kgu-PMnKIBNzhFSBOcd7tJ4Ji3b4gL8dtSMxaxZDI592zDZ-d3mmGnmqrziXPyUl7IOMJ1zozC-eqtcyOV9q4J8')
+    const myToken = await tokenhandler();
+    if (myToken) {
+      // const tokens=await  getToken(myToken);
+      // console.log('Token is htis here🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅🐅',tokens);
+    await  OnlineInformation(myToken, 'amsn', 'raman');
+      // createToken('1222222222sdffsddsdfssdfsadfsldfsldfshufshdfsdfssdfsdfasfasjl')
+    }
+    // sendFCMMessage('ewGEj2FnSzenylAZYvTsNC:APA91bEPiWqk6SIKivh0kOZcYTHyihVGVMsBw4A8mj1ApxX1Abgb_Kgu-PMnKIBNzhFSBOcd7tJ4Ji3b4gL8dtSMxaxZDI592zDZ-d3mmGnmqrziXPyUl7IOMJ1zozC-eqtcyOV9q4J8')
   };
 
   useEffect(() => {

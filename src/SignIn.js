@@ -9,7 +9,9 @@ import {
   Alert,
 } from 'react-native';
 import {
+  OnlineInformation,
   ReadCollectionsById,
+  getToken,
   signInfn,
   tokenhandler,
   updateUser,
@@ -23,9 +25,10 @@ const SignInForm = props => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const handleSignIn = async () => {
+    const deviceToken = await tokenhandler();
+
     try {
       const SecurityId = await signInfn(email, password);
-      const deviceToken = await tokenhandler();
       const docsID = SecurityId;
       const status = 'Online';
       if (docsID && deviceToken) {
@@ -36,15 +39,20 @@ const SignInForm = props => {
       if (docsID) {
         storeId({key: 'UserId', id: docsID});
         const {userList: users} = await ReadCollectionsById('users', docsID);
+        const userNameZego = users[0].name;
+        const userIDZego = users[0].phone;
 
         if (users && users.length > 0) {
-          const userNameZego = users[0].name;
-          const userIDZego = users[0].phone;
-
           await onUserLogin(userIDZego, userNameZego);
           storeUserInfo({userIDZego, userNameZego});
 
           navigation.navigate('UserLists', {userIDZego});
+        }
+        if (deviceToken) {
+          const userName = userNameZego;
+          const userPhone = userIDZego;
+          const myToken = deviceToken;
+          await OnlineInformation(myToken, userName, userPhone);
         }
       }
     } catch (error) {
