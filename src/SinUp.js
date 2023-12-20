@@ -11,11 +11,14 @@ import {
   Alert,
 } from 'react-native';
 import createUser, {createToken, signUpfn, tokenhandler} from './firebaseFns';
+import ProfileImageUploader from './ProfileImageUploader';
 
 const SignUpForm = props => {
+ 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
+  const [profileImageUrl, setProfileImageUrl] = useState('');
 
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -30,21 +33,35 @@ const SignUpForm = props => {
     const uuid = uuidv4();
     const userId = await signUpfn(email, password);
     const collectionDocsName = userId;
-    await createUser(collectionDocsName, uuid, name, email, phone, password);
+    await createUser(
+      collectionDocsName,
+      uuid,
+      name,
+      profileImageUrl,
+      email,
+      phone,
+      password,
+    );
     setEmail('');
     setPassword('');
     setPhone('');
     setConfirmPassword('');
     setName('');
-    props.navigation.navigate('SignInForm');
- 
+    setProfileImageUrl('');
     if (token) {
       createToken(token);
     }
+    props.navigation.navigate('SignInForm');
   };
 
   return (
     <View style={styles.container}>
+      <View style={styles.containerImageUploader}>
+        <ProfileImageUploader
+          setProfileImageUrl={setProfileImageUrl}
+          profileImageUrl={profileImageUrl}
+        />
+      </View>
       <View style={styles.Inputcontainer}>
         <TextInput
           style={styles.input}
@@ -71,7 +88,6 @@ const SignUpForm = props => {
           style={styles.input}
           label="Enter Phone Number"
           placeholder="Enter Phone Number"
-          secureTextEntry={true}
           placeholderTextColor="#474FB6"
           autoCorrect={true}
           numberOfLines={4}
@@ -128,6 +144,17 @@ const styles = StyleSheet.create({
     padding: 20,
     marginTop: 10,
   },
+  containerImageUploader: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginVertical: '10%',
+    backgroundColor: '#5C7CFA',
+    height: 150,
+    width: 150,
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: '#5C7CFA',
+  },
   input: {
     height: 40,
     borderColor: 'black',
@@ -138,10 +165,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   Inputcontainer: {
-    flex: 1.3,
     backgroundColor: 'white',
     placeholder: 'red',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   SignInLink: {
     backgroundColor: 'white',

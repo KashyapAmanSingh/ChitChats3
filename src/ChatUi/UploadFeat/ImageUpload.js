@@ -4,7 +4,7 @@ import DocumentPicker from 'react-native-document-picker';
 import storage from '@react-native-firebase/storage';
 import {createMessage} from '../../firebaseFns';
 
-const pickImage = async (uuid, ChatId, senderId, receiverId) => {
+export const pickImage = async () => {
   try {
     const response = await DocumentPicker.pickSingle({
       type: [
@@ -34,9 +34,7 @@ const pickImage = async (uuid, ChatId, senderId, receiverId) => {
           const put = await reference.putFile(fileCopyUri);
 
           const url = await reference.getDownloadURL();
-           if (uuid && type && url && ChatId && senderId && receiverId) {
-            createMessage(uuid, type, url, ChatId, senderId, receiverId);
-          }
+          if (url) return url;
         } catch (err) {
           console.log(err);
         }
@@ -46,4 +44,25 @@ const pickImage = async (uuid, ChatId, senderId, receiverId) => {
     console.log(err);
   }
 };
+
+export const uploadImageMessage = (
+  uuid,
+  type,
+  ChatId,
+  senderId,
+  receiverId,
+) => {
+  const url = pickImage();
+  if (uuid && type && ChatId && senderId && receiverId && url) {
+    createMessage(uuid, type, url, ChatId, senderId, receiverId);
+  }
+};
+
+
+
+
+
+// if (uuid && type && url && ChatId && senderId && receiverId) {
+//   uploadImageMessage(uuid, type, url, ChatId, senderId, receiverId);
+// }
 export default pickImage;

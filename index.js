@@ -13,7 +13,7 @@ import * as ZIM from 'zego-zim-react-native';
 import * as ZPNs from 'zego-zpns-react-native';
 import notifee, {EventType} from '@notifee/react-native';
 import {DisplayNotification} from './src/firebaseFns';
-// import {PermissionsAndroid} from 'react-native';
+ // import {PermissionsAndroid} from 'react-native';
 // PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 ZegoUIKitPrebuiltCallService.useSystemCallingUI([ZIM, ZPNs]);
 

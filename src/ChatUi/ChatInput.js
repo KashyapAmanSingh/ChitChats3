@@ -14,9 +14,8 @@ import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 
-import pickImage from './UploadFeat/ImageUpload';
+import {uploadImageMessage} from './UploadFeat/ImageUpload';
 import ChatTextEdit from './ChatText/ChatTextEdit';
-import { useNavigation } from '@react-navigation/native';
 
 const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const [message, setMessage] = useState('');
@@ -25,7 +24,6 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
 
   const [messageId, setMessageId] = useState(0);
   const uuid = uuidv4();
-  const navigation=useNavigation()
 
   const handleSend = () => {
     if (message.trim() !== '' && message && message) {
@@ -37,7 +35,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
     }
   };
   const uploadImagehandler = () => {
-    pickImage(uuid, ChatId, senderId, receiverId);
+    uploadImageMessage(uuid, ChatId, senderId, receiverId);
   };
   const handleEdit = (id, messageEditing) => {
     setMessageditStatus(true);
@@ -159,13 +157,11 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
-       
       </View>
-   
     </View>
   );
 };
- 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -20,7 +20,7 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
       userStatus: user.status,
     });
   };
-
+  console.log('profileImageUrl  profileImageUrl', user.profilePicture);
   const personalProfileIndex = personalIds
     ? userIds.indexOf(personalIds)
     : null;
@@ -32,7 +32,17 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
     <TouchableOpacity onPress={handleRouteSend}>
       <View style={styles.userItem}>
         <View style={styles.iconContainer}>
-          <Image source={require('../assets/ProfileIcon.gif')} />
+          {user.profilePicture && user.profilePicture !== '' ? (
+            <Image
+              style={styles.ImageProfileContainer}
+              source={{uri: user.profilePicture}}
+            />
+          ) : (
+            <Image
+              style={styles.ImageProfileContainer}
+              source={require('../assets/ProfileIcon.gif')}
+            />
+          )}
 
           <Text
             style={
@@ -61,22 +71,33 @@ const styles = StyleSheet.create({
     borderTopColor: 'black',
     borderTopWidth: 1,
     backgroundColor: 'white',
-    height: 80,
+    height: 70,
     width: 410,
   },
+  ImageProfileContainer: {
+    height: 55,
+    width: 55,
+    // backgroundColor: 'red',
+    borderColor: '#474FB6',
+    borderWidth: 1,
+    borderRadius: 50,
+    paddingRight: 0,
+  },
+
   onlineDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
     backgroundColor: '#99FF00',
-    marginLeft: 2,
+    marginLeft: 7,
+
   },
   OfflineDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
     backgroundColor: '#697754',
-    marginLeft: 2,
+    marginLeft: 7,
   },
   iconContainer: {
     marginRight: 0,

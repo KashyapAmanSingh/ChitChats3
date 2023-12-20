@@ -137,6 +137,7 @@ export const createUser = async (
   collectionDocsName,
   uuid,
   name,
+  profileImageUrl,
   email,
   phone,
 ) => {
@@ -146,6 +147,7 @@ export const createUser = async (
     await db.collection('users').doc(collectionDocsName).set({
       id: uuid,
       name: name,
+      profilePicture: profileImageUrl,
       phone: phone,
       email: email,
     });

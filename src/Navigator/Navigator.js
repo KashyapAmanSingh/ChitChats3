@@ -20,7 +20,6 @@ const Navigator = () => {
       initialRouteName="Home"
       screenOptions={{
         title: 'Users ',
-
         headerStyle: {
           backgroundColor: '#474FB6',
         },
