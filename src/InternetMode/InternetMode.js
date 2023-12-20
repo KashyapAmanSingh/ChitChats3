@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
-
 const InternetMode = () => {
   const [isConnected, setIsConnected] = useState(true);
+
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnected(state.isConnected);
@@ -15,13 +15,15 @@ const InternetMode = () => {
     };
   }, []);
 
+  const status = isConnected ? 'Online' : 'Offline';
+
   return (
     <View
-     style={[(isConnected ? styles.bgColorOnline : styles.bgColorOffline), styles.container]}
->
-      <Text style={styles.statusText}>
-        {isConnected ? 'Online' : 'Offline'}
-      </Text>
+      style={[
+        isConnected ? styles.bgColorOnline : styles.bgColorOffline,
+        styles.container,
+      ]}>
+      <Text style={styles.statusText}>{status}</Text>
     </View>
   );
 };

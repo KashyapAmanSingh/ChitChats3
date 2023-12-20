@@ -22,7 +22,6 @@ const ChatTextEdit = ({id, chatId, message, setMessageditStatus}) => {
 
       case 'Copy':
         setString(message);
-        Alert, alert('copied', message);
         break;
       case 'Share':
         const options = {
@@ -35,7 +34,6 @@ const ChatTextEdit = ({id, chatId, message, setMessageditStatus}) => {
           .catch(err => {
             err && console.log(err);
           });
-        Alert.alert('Share icon pressed');
         break;
 
       case 'Close':
@@ -43,7 +41,8 @@ const ChatTextEdit = ({id, chatId, message, setMessageditStatus}) => {
         break;
 
       default:
-        // Default case
+        Alert.alert('Error While Text Edit');
+
         break;
     }
   };

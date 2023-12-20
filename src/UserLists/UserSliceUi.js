@@ -10,17 +10,25 @@ import {
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import CallingBtn from '../CallingBtn/voiceCallingBtn';
+
+
+
+ 
+
+
+
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
+
   const handleRouteSend = () => {
     navigation.navigate('ChatUI', {
       userId: userIds[index],
       userPhone: user.phone,
       userName: user.name,
       userStatus: user.status,
+      userProfile: user.profilePicture
     });
   };
-  console.log('profileImageUrl  profileImageUrl', user.profilePicture);
   const personalProfileIndex = personalIds
     ? userIds.indexOf(personalIds)
     : null;
@@ -77,20 +85,18 @@ const styles = StyleSheet.create({
   ImageProfileContainer: {
     height: 55,
     width: 55,
-    // backgroundColor: 'red',
-    borderColor: '#474FB6',
+     borderColor: '#474FB6',
     borderWidth: 1,
     borderRadius: 50,
     paddingRight: 0,
   },
-
+ 
   onlineDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
     backgroundColor: '#99FF00',
     marginLeft: 7,
-
   },
   OfflineDot: {
     width: 10,

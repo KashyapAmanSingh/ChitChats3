@@ -3,7 +3,14 @@ import React, {useEffect, useState} from 'react';
 import ChatInput from './ChatInput';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import {getMessagesRealTime} from '../firebaseFns';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import CallingBtn from '../CallingBtn/voiceCallingBtn';
 import {useNavigation} from '@react-navigation/native';
 
@@ -11,12 +18,15 @@ const ChatUi = ({route}) => {
   const [receiverId, setReceiverId] = useState(null);
   const [senderId, setSenderId] = useState(null);
   const [getmessage, getChatMessage] = useState([]);
+
   const [ChatId, setChatId] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   const userPhone = route.params.userPhone;
   const userName = route.params.userName;
   const userStatus = route.params.userStatus;
+  const userProfile = route.params.userProfile;
+
   const navigation = useNavigation();
   useEffect(() => {
     const fetchData = async () => {
@@ -54,10 +64,17 @@ const ChatUi = ({route}) => {
                 source={require('../assets/goBack.png')}
               />
             </TouchableOpacity>
-            <Image
-              style={styles.UserChatImage}
-              source={require('../assets/ProfileIcon.gif')}
-            />
+            {userProfile === undefined ? (
+              <Image
+                style={styles.UserChatImage}
+                source={require('../assets/ProfileIcon.gif')}
+              />
+            ) : (
+              <Image
+                style={styles.ImageProfileContainer}
+                source={{uri: userProfile}}
+              />
+            )}
             <Text style={styles.ChattingUserName} selectable={true}>
               {userName.slice(0, 8)}...
               {'\n'}
@@ -94,6 +111,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#ccc',
     backgroundColor: '#474FB6',
   },
+
   CallingBtn: {
     flex: 0.2,
     alignContent: 'flex-end',
@@ -116,6 +134,18 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginLeft: 10,
     alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  ImageProfileContainer: {
+    height: 55,
+    width: 55,
+    // backgroundColor: 'red',
+    borderColor: '#474FB6',
+    borderWidth: 1,
+    borderRadius: 50,
+    paddingRight: 0,
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
   UserNameCallBtn: {height: '100%', flexDirection: 'row'},
   UserGoBackIcon: {
