@@ -137,7 +137,6 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
             setMessageditStatus={setMessageditStatus}
           />
         ) : null}
-        <Button title="camera" onPress={navigation.navigate('CameraPhoto')} />
       </View>
 
       <View style={styles.InputContainer}>
@@ -160,14 +159,13 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity> */}
+       
       </View>
+   
     </View>
   );
 };
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,

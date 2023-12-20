@@ -1,14 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Text,
-  Alert,
-} from 'react-native';
- import {ReadCollections, signOut} from '../firebaseFns';
+import {View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
+import {ReadCollections, signOut} from '../firebaseFns';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
 import {useNavigation} from '@react-navigation/native';
@@ -50,8 +43,7 @@ const UserLists = props => {
   const SignOuthandler = () => {
     signOut(navigation);
   };
-  
- 
+
   return (
     <>
       <View style={styles.UserListsUi}>
@@ -71,26 +63,14 @@ const UserLists = props => {
       <TouchableOpacity style={styles.button} onPress={SignOuthandler}>
         <Text style={[styles.buttonText, styles.SignInFormText]}>Sign Out</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.button} onPress={tokenhand}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('CameraPhoto')}>
         <Text style={[styles.buttonText, styles.SignInFormText]}>
-          get token
-        </Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity style={styles.button} onPress={copyToClipboard}>
-        <Text style={[styles.buttonText, styles.SignInFormText]}>
-          get token
-        </Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity style={styles.button} onPress={copyToClipboard}>
-        <Text style={[styles.buttonText, styles.SignInFormText]}>
-          Click here to copy to Clipboard
+          CameraPhoto
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={fetchCopiedText}>
-        <Text style={[styles.buttonText, styles.SignInFormText]}>
-          View copied text
-        </Text>
-      </TouchableOpacity> */}
+
       <InternetMode />
     </>
   );

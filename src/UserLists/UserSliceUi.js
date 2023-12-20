@@ -17,11 +17,14 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
       userId: userIds[index],
       userPhone: user.phone,
       userName: user.name,
-      userStatus :user.status 
+      userStatus: user.status,
     });
   };
-  const personalProfileIndex = userIds.indexOf(personalIds);
-  if (personalProfileIndex === index) {
+
+  const personalProfileIndex = personalIds
+    ? userIds.indexOf(personalIds)
+    : null;
+  if (personalProfileIndex === index && personalProfileIndex !== null) {
     return;
   }
 
@@ -37,7 +40,6 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
             }
           />
         </View>
-        {/* <Text style={styles.userItemText}>{user.status }...</Text> */}
 
         <Text style={styles.userItemText}>{user.name.slice(0, 8)}...</Text>
         <CallingBtn userID={user.phone} userName={user.name} />

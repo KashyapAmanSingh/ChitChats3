@@ -3,9 +3,9 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {ZegoCallInvitationDialog} from '@zegocloud/zego-uikit-prebuilt-call-rn';
 import Navigator from './src/Navigator/Navigator';
-import notifee from '@notifee/react-native';
 
 import messaging from '@react-native-firebase/messaging';
+import {DisplayNotification, requestPermission} from './src/firebaseFns';
 
 const App = () => {
   useEffect(() => {
@@ -14,26 +14,15 @@ const App = () => {
       DisplayNotification(remoteMessage);
     });
 
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      DisplayNotification(remoteMessage);
-
-      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
     const handleNotificationOpenedApp = remoteMessage => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification,
-      );
+      DisplayNotification(remoteMessage);
     };
 
     const handleInitialNotification = async () => {
       const initialNotification = await messaging().getInitialNotification();
-
+      const remoteMessage = initialNotification;
       if (initialNotification) {
-        console.log(
-          'Notification caused app to open from quit state:',
-          initialNotification.notification,
-        );
+        DisplayNotification(remoteMessage);
       }
     };
 
@@ -43,48 +32,6 @@ const App = () => {
 
     return unsubscribe;
   }, []);
-
-  const requestPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      console.log('🧠 Authorization status:', authStatus);
-    }
-  };
-
-  async function DisplayNotification(remoteMessage) {
-    // Create a channel
-    const channelId = await notifee.createChannel({
-      id: 'default',
-      name: 'Default Channel',
-    });
-
-    // Display a notification
-    await notifee.displayNotification({
-      title: remoteMessage.notification.title,
-      body: remoteMessage.notification.body,
-      android: {
-        channelId,
-        smallIcon: 'ic_launcher',
-        color: '#4caf50',
-        actions: [
-          {
-            title: '<h6>Mark as Read</h6> &#x2714 ',
-            pressAction: {id: 'Read'},
-          },
-          {
-            title: '<h6 style="color:#8B4513;"> View  &#128065;</h6>',
-            pressAction: {id: 'View'},
-          },
-        ],
-      },
-    });
-  }
- 
 
   return (
     <NavigationContainer>

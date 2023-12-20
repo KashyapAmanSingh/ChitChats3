@@ -49,6 +49,7 @@ const SignInForm = props => {
         if (deviceToken) {
           const userName = userNameZego;
           const userPhone = userIDZego;
+
           const myToken = deviceToken;
           await OnlineInformation(myToken, userName, userPhone);
         }

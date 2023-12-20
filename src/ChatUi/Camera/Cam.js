@@ -11,6 +11,7 @@ import {
   Text,
   Linking,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 
@@ -39,9 +40,7 @@ function CameraPhoto() {
     }
   };
 
-  if (device == null) {
-    return <Text>Camera not available</Text>;
-  }
+  if (!devices.back) return <ActivityIndicator size={30} color="#5C7CFA" />;
 
   return (
     <View style={styles.container}>

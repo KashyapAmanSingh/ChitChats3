@@ -6,6 +6,7 @@ import {getId, removeId} from './AsyncStorageUtility/AsyncUtility';
 import {onSnapshot} from 'firebase/firestore';
 import {onUserLogout, removeUserInfo} from './VideoCall/ZegoUtillity';
 import messaging from '@react-native-firebase/messaging';
+import notifee from '@notifee/react-native';
 
 export const signUpfn = async (email, password) => {
   try {
@@ -96,8 +97,8 @@ export const updateUser = async (
 
 export const tokenhandler = async () => {
   await messaging().registerDeviceForRemoteMessages();
+
   const token = await messaging().getToken();
-  console.log('Token is htis here 💝💝💝💝💝💝💝💝💝💝', token);
   return token;
 };
 
@@ -282,7 +283,7 @@ export const updateMessage = async (id, chatId, message) => {
     });
 };
 
-export const sendFCMMessag = async (usertoken, userName, userPhone) => {
+export const sendFCMMessage = async (usertoken, userName, userPhone) => {
   const data = JSON.stringify({
     data: {},
     notification: {
@@ -311,36 +312,6 @@ export const sendFCMMessag = async (usertoken, userName, userPhone) => {
   }
 };
 
-export const sendFCMMessage = async token => {
-  console.log('token hs yes', token );
-  const data = JSON.stringify({
-    data: {},
-    notification: {
-      body: `Click to Chat Anonymous`,
-      title: `Anonymous is online now`,
-    },
-    to: token,
-  });
-
-  const config = {
-    method: 'POST',
-    headers: {
-      Authorization:
-        'key=AAAAV4zOXww:APA91bHUoMZY7aLmFzDoxh1l98CpvDdEmB28K79A1ktShkNAj9RWVfF4fgSTDzCUGyUv_vcpoul2AF4qpV6SqXZ03dcU4pMhKbw49QXqpywTywrXTH6Eq2TrijDrL1TKUqV2alXveJac',
-      'Content-Type': 'application/json',
-    },
-    body: data,
-  };
-
-  try {
-    const response = await fetch('https://fcm.googleapis.com/fcm/send', config);
-    const responseData = await response.json();
-    console.log('FCM message sent successfully:', responseData);
-  } catch (error) {
-    console.error('Error sending FCM message:', error);
-  }
-};
-
 export const OnlineInformation = async (myToken, userName, userPhone) => {
   const otherUsersToken = await getToken(myToken);
   if (otherUsersToken) {
@@ -348,6 +319,42 @@ export const OnlineInformation = async (myToken, userName, userPhone) => {
       sendFCMMessage(usertoken, userName, userPhone),
     );
   }
+};
+
+export const requestPermission = async () => {
+  const authStatus = await messaging().requestPermission();
+
+  authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+};
+
+export const DisplayNotification = async remoteMessage => {
+  // Create a channel
+  const channelId = await notifee.createChannel({
+    id: 'default',
+    name: 'Default Channel',
+  });
+
+  // Display a notification
+  await notifee.displayNotification({
+    title: remoteMessage.notification.title,
+    body: remoteMessage.notification.body,
+    android: {
+      channelId,
+      smallIcon: 'ic_launcher',
+      color: '#4caf50',
+      actions: [
+        {
+          title: '<h6>Mark as Read</h6> &#x2714 ',
+          pressAction: {id: 'mark-as-read'},
+        },
+        {
+          title: '<h6 style="color:#8B4513;"> View  &#128065;</h6>',
+          pressAction: {id: 'View'},
+        },
+      ],
+    },
+  });
 };
 
 export default createUser;
