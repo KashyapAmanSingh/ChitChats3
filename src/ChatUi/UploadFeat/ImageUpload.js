@@ -10,6 +10,7 @@ export const pickImage = async () => {
       type: [
         DocumentPicker.types.images,
         DocumentPicker.types.audio,
+        DocumentPicker.types.video,
         DocumentPicker.types.zip,
         DocumentPicker.types.doc,
         DocumentPicker.types.pdf,
@@ -27,14 +28,14 @@ export const pickImage = async () => {
       }
       const name = response.name || '';
       const fileCopyUri = response.fileCopyUri || '';
-      const type = response.type || '';
-      if (type && name && fileCopyUri) {
+      const fileType = response.type || '';
+       if (fileType && name && fileCopyUri) {
         try {
           const reference = storage().ref(`/messageImages/${name}`);
           const put = await reference.putFile(fileCopyUri);
 
           const url = await reference.getDownloadURL();
-          if (url) return url;
+          if (url) return {url, fileType};
         } catch (err) {
           console.log(err);
         }
@@ -45,24 +46,18 @@ export const pickImage = async () => {
   }
 };
 
-export const uploadImageMessage = (
+export const uploadImageMessage = async (
   uuid,
-  type,
   ChatId,
   senderId,
   receiverId,
 ) => {
-  const url = pickImage();
+  const {url, fileType} = await pickImage();
+  const type = fileType.slice(0, fileType.indexOf('/'));
+
   if (uuid && type && ChatId && senderId && receiverId && url) {
     createMessage(uuid, type, url, ChatId, senderId, receiverId);
   }
 };
 
-
-
-
-
-// if (uuid && type && url && ChatId && senderId && receiverId) {
-//   uploadImageMessage(uuid, type, url, ChatId, senderId, receiverId);
-// }
 export default pickImage;

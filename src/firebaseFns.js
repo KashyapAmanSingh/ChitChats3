@@ -196,6 +196,7 @@ export const createMessage = async (
   senderId,
   receiverId,
 ) => {
+  console.log(`createMessage 💳💳💳💳💳💳💳💳💳💳 ${types}`);
   try {
     // Access the Firestore database
     const db = firestore();
@@ -358,11 +359,5 @@ export const DisplayNotification = async remoteMessage => {
     },
   });
 };
-
-
-
- 
-
-
 
 export default createUser;

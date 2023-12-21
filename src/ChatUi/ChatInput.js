@@ -8,7 +8,6 @@ import {
   StyleSheet,
   FlatList,
   Image,
-  Button,
 } from 'react-native';
 import {createMessage} from '../firebaseFns';
 import 'react-native-get-random-values';
@@ -16,8 +15,9 @@ import {v4 as uuidv4} from 'uuid';
 
 import {uploadImageMessage} from './UploadFeat/ImageUpload';
 import ChatTextEdit from './ChatText/ChatTextEdit';
+import FileViewer from './FileView';
 
-const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
+const ChatInput = ({senderId, receiverId, ChatId, getmessage, userProfile}) => {
   const [message, setMessage] = useState('');
   const [messageedit, setMessageditStatus] = useState(false);
   const [messageeditText, setMessagedit] = useState('');
@@ -37,11 +37,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
   const uploadImagehandler = () => {
     uploadImageMessage(uuid, ChatId, senderId, receiverId);
   };
-  const handleEdit = (id, messageEditing) => {
-    setMessageditStatus(true);
-    setMessagedit(messageEditing);
-    setMessageId(id);
-  };
+
   return (
     <View style={styles.container}>
       <View style={styles.chatsLists}>
@@ -49,79 +45,15 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage}) => {
           <FlatList
             data={getmessage}
             renderItem={({item}) => (
-              <>
-                {item.senderId === senderId ? (
-                  <View
-                    style={
-                      messageedit && messageId === item.ChatId
-                        ? styles.chatContainerEdit
-                        : null
-                    }>
-                    {item.fileType === 'Text' ? (
-                      <Text
-                        selectable={true}
-                        onLongPress={() =>
-                          handleEdit(item.ChatId, item.message)
-                        }
-                        style={[
-                          messageedit && messageId === item.ChatId
-                            ? styles.chatEdit
-                            : null,
-                          styles.ChatMessage,
-                          styles.ChatMessageSender,
-                        ]}>
-                        {item.message}
-                      </Text>
-                    ) : item.fileType === 'image/jpeg' ? (
-                      <TouchableOpacity
-                        style={[styles.ChatMessageSender, styles.chatTests]}
-                        onLongPress={() =>
-                          handleEdit(item.ChatId, item.message)
-                        }>
-                        <Image
-                          source={{uri: item.message}}
-                          style={[styles.ChatImages]}
-                        />
-                      </TouchableOpacity>
-                    ) : null}
-                  </View>
-                ) : (
-                  <View
-                    style={
-                      messageedit && messageId === item.ChatId
-                        ? styles.chatContainerEdit
-                        : null
-                    }>
-                    {item.fileType === 'Text' ? (
-                      <Text
-                        selectable={true}
-                        onLongPress={() =>
-                          handleEdit(item.ChatId, item.message)
-                        }
-                        style={[
-                          messageedit && messageId === item.ChatId
-                            ? styles.chatEdit
-                            : null,
-                          styles.ChatMessage,
-                          styles.ChatMessageReceiver,
-                        ]}>
-                        {item.message}
-                      </Text>
-                    ) : item.fileType === 'image/jpeg' ? (
-                      <TouchableOpacity
-                        style={[styles.ChatMessageReceiver, styles.chatTests]}
-                        onLongPress={() =>
-                          handleEdit(item.ChatId, item.message)
-                        }>
-                        <Image
-                          source={{uri: item.message}}
-                          style={[styles.ChatImages]}
-                        />
-                      </TouchableOpacity>
-                    ) : null}
-                  </View>
-                )}
-              </>
+              <FileViewer
+                item={item}
+                senderId={senderId}
+                messageedit={messageedit}
+                setMessageditStatus={setMessageditStatus}
+                setMessagedit={setMessagedit}
+                setMessageId={setMessageId}
+                userProfile={userProfile}
+              />
             )}
             keyExtractor={(item, index) => index.toString()}
           />

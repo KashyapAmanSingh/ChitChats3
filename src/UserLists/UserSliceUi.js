@@ -11,12 +11,7 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import CallingBtn from '../CallingBtn/voiceCallingBtn';
 
-
-
  
-
-
-
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
 

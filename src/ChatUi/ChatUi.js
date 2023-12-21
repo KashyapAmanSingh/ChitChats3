@@ -95,6 +95,7 @@ const ChatUi = ({route}) => {
           getmessage={getmessage}
           userName
           userPhone
+          userProfile={userProfile}
         />
       </View>
     </View>
