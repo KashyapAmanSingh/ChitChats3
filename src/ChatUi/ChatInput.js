@@ -53,6 +53,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage, userProfile}) => {
                 setMessagedit={setMessagedit}
                 setMessageId={setMessageId}
                 userProfile={userProfile}
+                messageId={messageId}
               />
             )}
             keyExtractor={(item, index) => index.toString()}

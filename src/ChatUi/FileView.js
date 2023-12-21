@@ -1,13 +1,8 @@
 /* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
-import {
-  View,
-  Image,
-  Video,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import MediaMsgComponent from './MediaMsgComponent/MediaMsgComponent';
+import {messageCreationTimeStamps} from './MediaMsgComponent/TimeUtility/TimeUtility';
 
 const FileViewer = ({
   item,
@@ -16,21 +11,15 @@ const FileViewer = ({
   setMessageditStatus,
   setMessagedit,
   setMessageId,
-  userProfile
+  userProfile,
+  messageId,
 }) => {
   const [messageIdFileViewer, setMessageIdFileViewer] = useState(0);
-  // if (!item || !item) {
-  //   return <Text>Item not available</Text>;
-  // }
-  console.log(
-    item,
-    'setMessageIdFileViewer📿📿📿📿📿📿📿📿📿',
-    senderId,
-    messageedit,
-    setMessageditStatus,
-    setMessagedit,
-    setMessageId,
-  );
+
+  if (!item) {
+    return <Text>Item not available</Text>;
+  }
+
   const handleEdit = (id, messageEditing) => {
     setMessageditStatus(true);
     setMessagedit(messageEditing);
@@ -38,8 +27,12 @@ const FileViewer = ({
     setMessageIdFileViewer(id);
   };
 
-  const renderFile = () => {
+  const renderFile = params => {
     if (item && item) {
+      const {day, formattedTime, formattedDate} = messageCreationTimeStamps(
+        item.createdAt.seconds,
+        item.createdAt.nanoseconds,
+      );
       switch (item.fileType) {
         case 'Text':
           return (
@@ -51,38 +44,73 @@ const FileViewer = ({
                   ? styles.chatEdit
                   : null,
                 styles.ChatMessage,
-                styles.ChatMessageSender,
+                params && styles[params],
               ]}>
               {item.message}
+              {'\n'}
+              <Text style={[styles.formattedTimeCss]}>{formattedTime}</Text>
+              {/* {`Day: ${day}, Time: ${formattedTime}, Date: ${formattedDate}`} */}
             </Text>
           );
 
         case 'image':
           return (
             <TouchableOpacity
-              style={[styles.ChatMessageSender, styles.chatTests]}
+              style={[styles.ChatMessageSender]}
               onLongPress={() => handleEdit(item.ChatId, item.message)}>
               <Image source={{uri: item.message}} style={[styles.ChatImages]} />
+
+              <Text style={[styles.formattedTimeCss]}>{formattedTime}</Text>
             </TouchableOpacity>
           );
         case 'audio':
-          return <Text>Audio Player</Text>;
+          return (
+            <>
+              <MediaMsgComponent
+                item={item}
+                senderId={senderId}
+                messageedit={messageedit}
+                setMessageditStatus={setMessageditStatus}
+                setMessagedit={setMessagedit}
+                setMessageId={setMessageId}
+                userProfile={userProfile}
+                type={'audio'}
+                params={params}
+                messageId={messageId}
+                formattedTime={formattedTime}
+              />
+            </>
+          );
+
         case 'video':
-          return <Text>video Player</Text>;
-        // return (
-        //   <Video
-        //     source={{uri: item.message}}
-        //     // eslint-disable-next-line react-native/no-inline-styles
-        //     style={{width: 300, height: 200}}
-        //   />
-        // );
+          return (
+            <MediaMsgComponent
+              item={item}
+              setMessageditStatus={setMessageditStatus}
+              setMessagedit={setMessagedit}
+              setMessageId={setMessageId}
+              userProfile={userProfile}
+              type={'video'}
+              params={params}
+              formattedTime={formattedTime}
+            />
+          );
+
         case 'application':
           return (
-            <TouchableOpacity
-              onPress={() => handleEdit(item.ChatId, item.message)}
-              style={[styles.ChatMessageSender, styles.chatTests]}>
-              <Text>{item.message}</Text>
-            </TouchableOpacity>
+            <MediaMsgComponent
+              item={item}
+              senderId={senderId}
+              messageedit={messageedit}
+              setMessageditStatus={setMessageditStatus}
+              setMessagedit={setMessagedit}
+              setMessageId={setMessageId}
+              userProfile={userProfile}
+              type={'application'}
+              params={params}
+              messageId={messageId}
+              formattedTime={formattedTime}
+            />
           );
 
         default:
@@ -100,7 +128,7 @@ const FileViewer = ({
               ? styles.chatContainerEdit
               : null
           }>
-          {renderFile()}
+          {renderFile('ChatMessageSender')}
         </View>
       ) : (
         <View
@@ -109,7 +137,7 @@ const FileViewer = ({
               ? styles.chatContainerEdit
               : null
           }>
-          {renderFile()}
+          {renderFile('ChatMessageReceiver')}
         </View>
       )}
     </>
@@ -117,6 +145,23 @@ const FileViewer = ({
 };
 
 const styles = StyleSheet.create({
+  formattedTimeCss: {
+    fontSize: 11,
+    width: '100%',
+    alignSelf: 'flex-end',
+    marginHorizontal: 20,
+    marginVertical: 2,
+    fontWeight: 'bold',
+    color: '#6B6B6B',
+  },
+
+  UserChatMessageIcon: {
+    height: 45,
+    width: 45,
+    alignSelf: 'center',
+    marginLeft: 1,
+  },
+
   chatEdit: {
     backgroundColor: '#5C7CFA',
     borderWidth: 2,
