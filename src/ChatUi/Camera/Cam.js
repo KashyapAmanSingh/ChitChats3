@@ -6,12 +6,11 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
-  Button,
   TouchableOpacity,
   Text,
-  Linking,
   Image,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 
@@ -20,24 +19,45 @@ function CameraPhoto() {
   const devices = useCameraDevices();
   const device = devices.back;
 
-  const [showCamera, setShowCamera] = useState(false);
+  const [showCamera, setShowCamera] = useState(true);
   const [imageSource, setImageSource] = useState('');
 
   useEffect(() => {
     async function getPermission() {
-      const newCameraPermission = await Camera.requestCameraPermission();
-      console.log(newCameraPermission);
+      const permissionCamera = await Camera.requestCameraPermission();
+      const permissionMicrophone = await Camera.requestMicrophonePermission();
+
+      const getCameraPermissionStatus =
+        await Camera.getCameraPermissionStatus();
+      const microphonePermissionStatus =
+        await Camera.getMicrophonePermissionStatus();
+     
+      if (permissionCamera === 'denied') await Linking.openSettings();
     }
     getPermission();
   }, []);
 
   const capturePhoto = async () => {
     if (camera.current !== null) {
-      const photo = await camera.current.takePhoto({});
+      const photo = await camera.current.takePhoto({
+        flash: 'on',
+      });
       setImageSource(photo.path);
       setShowCamera(false);
-      console.log(photo.path);
+      // console.log(photo.path);
     }
+  };
+
+  const recordVideo = () => {
+    camera.current.startRecording({
+      flash: 'on',
+      onRecordingFinished: video => console.log(video),
+      onRecordingError: error => console.error(error),
+    });
+  };
+
+  const StoprecordVideo = async () => {
+    await camera.current.stopRecording();
   };
 
   if (!devices.back) return <ActivityIndicator size={30} color="#5C7CFA" />;
@@ -52,6 +72,8 @@ function CameraPhoto() {
             device={device}
             isActive={showCamera}
             photo={true}
+            video={true}
+            audio={true}
           />
 
           <View style={styles.buttonContainer}>
@@ -120,6 +142,36 @@ function CameraPhoto() {
                   Use Photo
                 </Text>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#77c3ec',
+                  padding: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: 'white',
+                }}
+                onPress={() => recordVideo()}>
+                <Text style={{color: 'white', fontWeight: '500'}}>
+                  recordVideo
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#77c3ec',
+                  padding: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: 'white',
+                }}
+                onPress={() => StoprecordVideo()}>
+                <Text style={{color: 'red', fontWeight: '500'}}>Stop</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </>
@@ -163,7 +215,6 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 40,
-    //ADD backgroundColor COLOR GREY
     backgroundColor: '#B2BEB5',
 
     alignSelf: 'center',
