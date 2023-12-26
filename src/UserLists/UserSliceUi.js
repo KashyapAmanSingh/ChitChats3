@@ -11,7 +11,6 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import CallingBtn from '../CallingBtn/voiceCallingBtn';
 
- 
 const UserSliceUi = ({user, userIds, index, personalIds}) => {
   const navigation = useNavigation();
 
@@ -21,7 +20,7 @@ const UserSliceUi = ({user, userIds, index, personalIds}) => {
       userPhone: user.phone,
       userName: user.name,
       userStatus: user.status,
-      userProfile: user.profilePicture
+      userProfile: user.profilePicture,
     });
   };
   const personalProfileIndex = personalIds
@@ -80,12 +79,12 @@ const styles = StyleSheet.create({
   ImageProfileContainer: {
     height: 55,
     width: 55,
-     borderColor: '#474FB6',
+    borderColor: '#474FB6',
     borderWidth: 1,
     borderRadius: 50,
     paddingRight: 0,
   },
- 
+
   onlineDot: {
     width: 10,
     height: 10,

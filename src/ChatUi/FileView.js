@@ -5,7 +5,7 @@ import MediaMsgComponent from './MediaMsgComponent/MediaMsgComponent';
 import {messageCreationTimeStamps} from './MediaMsgComponent/TimeUtility/TimeUtility';
 import Image from 'react-native-image-progress';
 import ProgressCircle from 'react-native-progress/Circle';
-import UploadProgressStateComponent from './ProgressBar/UploadProgressStateComponent';
+ import {useNavigation} from '@react-navigation/native';
 const FileViewer = ({
   item,
   senderId,
@@ -15,18 +15,26 @@ const FileViewer = ({
   setMessageId,
   userProfile,
   messageId,
- }) => {
+}) => {
+  const navigation = useNavigation();
+
   const [messageIdFileViewer, setMessageIdFileViewer] = useState(0);
 
   if (!item) {
     return <Text>Item not available</Text>;
   }
-
   const handleEdit = (id, messageEditing) => {
     setMessageditStatus(true);
     setMessagedit(messageEditing);
     setMessageId(id);
     setMessageIdFileViewer(id);
+  };
+
+ 
+  const handleImageDetails = url => {
+    navigation.navigate('ShowImage', {
+      url: url,
+    });
   };
 
   const renderFile = params => {
@@ -59,6 +67,7 @@ const FileViewer = ({
           return (
             <TouchableOpacity
               style={[styles.ChatMessageSender]}
+              onPress={() => handleImageDetails(item.message)}
               onLongPress={() => handleEdit(item.ChatId, item.message)}>
               <Image
                 indicator={ProgressCircle}
@@ -92,7 +101,7 @@ const FileViewer = ({
                 params={params}
                 messageId={messageId}
                 formattedTime={formattedTime}
-               />
+              />
             </>
           );
 
@@ -108,7 +117,7 @@ const FileViewer = ({
                 type={'video'}
                 params={params}
                 formattedTime={formattedTime}
-               />
+              />
             </>
           );
 

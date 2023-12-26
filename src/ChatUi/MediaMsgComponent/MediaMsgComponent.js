@@ -8,8 +8,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import UploadProgressStateComponent from '../ProgressBar/UploadProgressStateComponent';
-
+ 
 const MediaMsgComponent = ({
   item,
   setMessageditStatus,

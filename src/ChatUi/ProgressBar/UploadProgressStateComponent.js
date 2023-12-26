@@ -17,7 +17,7 @@ const UploadProgressStateComponent = ({uploadProgresState}) => {
         animated={true}
         showsText={true}
         unfilledColor="white"
-        formatText={() => `${uploadProgresState}%`} // Pass the function as a prop
+        formatText={() => `${uploadProgresState}%`}
       />
     </View>
   );

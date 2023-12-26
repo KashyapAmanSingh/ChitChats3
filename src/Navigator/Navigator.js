@@ -12,7 +12,8 @@ import {
 } from '@zegocloud/zego-uikit-prebuilt-call-rn';
 import UserLists from '../UserLists/UserLists';
 import CameraPhoto from '../ChatUi/Camera/Cam';
-
+import ShowImage from '../showImage/showImage';
+ 
 const Stack = createNativeStackNavigator();
 const Navigator = () => {
   return (
@@ -78,7 +79,17 @@ const Navigator = () => {
           },
         }}
       />
-
+      <Stack.Screen
+        name="ShowImage"
+        component={ShowImage}
+        options={{
+          title: 'ShowImage',
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: '#474FB6',
+          },
+        }}
+      />
       <Stack.Screen
         options={{headerShown: false}}
         // DO NOT change the name
