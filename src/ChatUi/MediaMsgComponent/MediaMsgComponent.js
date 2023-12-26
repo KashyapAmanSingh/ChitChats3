@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {
-   Image,
+  Image,
   Linking,
   StyleSheet,
   Text,
@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
+import UploadProgressStateComponent from '../ProgressBar/UploadProgressStateComponent';
 
 const MediaMsgComponent = ({
   item,
@@ -18,7 +19,7 @@ const MediaMsgComponent = ({
   type,
   params,
   formattedTime,
-}) => {
+ }) => {
   const handleEdit = (id, messageEditing) => {
     setMessageditStatus(true);
     setMessagedit(messageEditing);
@@ -56,6 +57,8 @@ const MediaMsgComponent = ({
             style={styles.UserChatWaveIcon}
           />
         ) : null}
+
+      
 
         <Text
           style={[
@@ -118,8 +121,7 @@ const styles = StyleSheet.create({
     width: 45,
     flexDirection: 'row',
   },
- 
- 
+
   ChatMessageSender: {
     alignSelf: 'flex-end',
     marginLeft: 70,
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
 
     backgroundColor: '#339AF01F',
   },
- 
+
   formattedTimeCss: {
     fontSize: 11,
     alignSelf: 'flex-end',

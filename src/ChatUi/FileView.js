@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import MediaMsgComponent from './MediaMsgComponent/MediaMsgComponent';
 import {messageCreationTimeStamps} from './MediaMsgComponent/TimeUtility/TimeUtility';
-
+import Image from 'react-native-image-progress';
+import ProgressCircle from 'react-native-progress/Circle';
+import UploadProgressStateComponent from './ProgressBar/UploadProgressStateComponent';
 const FileViewer = ({
   item,
   senderId,
@@ -13,7 +15,7 @@ const FileViewer = ({
   setMessageId,
   userProfile,
   messageId,
-}) => {
+ }) => {
   const [messageIdFileViewer, setMessageIdFileViewer] = useState(0);
 
   if (!item) {
@@ -58,7 +60,19 @@ const FileViewer = ({
             <TouchableOpacity
               style={[styles.ChatMessageSender]}
               onLongPress={() => handleEdit(item.ChatId, item.message)}>
-              <Image source={{uri: item.message}} style={[styles.ChatImages]} />
+              <Image
+                indicator={ProgressCircle}
+                source={{uri: item.message}}
+                style={[styles.ChatImages]}
+                indicatorProps={{
+                  size: 60,
+                  borderWidth: 1,
+                  color: '#474FB6',
+                  unfilledColor: 'white',
+                  thickness: 4,
+                  borderColor: '#474FB6',
+                }}
+              />
 
               <Text style={[styles.formattedTimeCss]}>{formattedTime}</Text>
             </TouchableOpacity>
@@ -78,22 +92,24 @@ const FileViewer = ({
                 params={params}
                 messageId={messageId}
                 formattedTime={formattedTime}
-              />
+               />
             </>
           );
 
         case 'video':
           return (
-            <MediaMsgComponent
-              item={item}
-              setMessageditStatus={setMessageditStatus}
-              setMessagedit={setMessagedit}
-              setMessageId={setMessageId}
-              userProfile={userProfile}
-              type={'video'}
-              params={params}
-              formattedTime={formattedTime}
-            />
+            <>
+              <MediaMsgComponent
+                item={item}
+                setMessageditStatus={setMessageditStatus}
+                setMessagedit={setMessagedit}
+                setMessageId={setMessageId}
+                userProfile={userProfile}
+                type={'video'}
+                params={params}
+                formattedTime={formattedTime}
+               />
+            </>
           );
 
         case 'application':

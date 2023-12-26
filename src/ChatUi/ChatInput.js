@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -16,11 +16,13 @@ import {v4 as uuidv4} from 'uuid';
 import {uploadImageMessage} from './UploadFeat/ImageUpload';
 import ChatTextEdit from './ChatText/ChatTextEdit';
 import FileViewer from './FileView';
+import UploadProgressStateComponent from './ProgressBar/UploadProgressStateComponent';
 
 const ChatInput = ({senderId, receiverId, ChatId, getmessage, userProfile}) => {
   const [message, setMessage] = useState('');
   const [messageedit, setMessageditStatus] = useState(false);
   const [messageeditText, setMessagedit] = useState('');
+  const [uploadProgresState, setuploadProgresState] = useState(0);
 
   const [messageId, setMessageId] = useState(0);
   const uuid = uuidv4();
@@ -35,7 +37,13 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage, userProfile}) => {
     }
   };
   const uploadImagehandler = () => {
-    uploadImageMessage(uuid, ChatId, senderId, receiverId);
+    uploadImageMessage(
+      uuid,
+      ChatId,
+      senderId,
+      receiverId,
+      setuploadProgresState,
+    );
   };
 
   return (
@@ -54,6 +62,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage, userProfile}) => {
                 setMessageId={setMessageId}
                 userProfile={userProfile}
                 messageId={messageId}
+                uploadProgresState={uploadProgresState}
               />
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -69,7 +78,13 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage, userProfile}) => {
           />
         ) : null}
       </View>
-
+      <View style={styles.loaderContainer}>
+        {uploadProgresState !== 100 && uploadProgresState !== 0 ? (
+          <UploadProgressStateComponent
+            uploadProgresState={uploadProgresState}
+          />
+        ) : null}
+      </View>
       <View style={styles.InputContainer}>
         <TouchableOpacity
           style={styles.SendItemsIcon}
@@ -105,6 +120,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+  },
+  loaderContainer: {
+    alignSelf: 'flex-end',
+    marginHorizontal: 50,
+    marginVertical: 10,
   },
   chatsLists: {
     backgroundColor: 'white',
