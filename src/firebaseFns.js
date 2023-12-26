@@ -196,8 +196,7 @@ export const createMessage = async (
   senderId,
   receiverId,
 ) => {
-  console.log(`createMessage 💳💳💳💳💳💳💳💳💳💳 ${types}`);
-  try {
+   try {
     // Access the Firestore database
     const db = firestore();
 
