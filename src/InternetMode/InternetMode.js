@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   bgColorOnline: {
-    backgroundColor: '#7FBA25',
+    backgroundColor: '#2534FF',
   },
   bgColorOffline: {
     backgroundColor: '#697754',

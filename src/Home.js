@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
-import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import {getId} from './AsyncStorageUtility/AsyncUtility';
-import {signOut} from './firebaseFns';
 import UserLists from './UserLists/UserLists';
 
 const Home = props => {
@@ -27,7 +26,7 @@ const Home = props => {
         if (storedId) {
           setUserId(storedId);
         }
-       } catch (error) {
+      } catch (error) {
         console.error('Error fetching data:', error);
       }
     }

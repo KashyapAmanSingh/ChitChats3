@@ -2,13 +2,15 @@
 /* eslint-disable prettier/prettier */
 
 import React, {useEffect, useRef, useState} from 'react';
-
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
   Linking,
+  Image,
+  Text,
+  Alert,
 } from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 
@@ -19,6 +21,24 @@ function CameraPhoto() {
 
   const [showCamera, setShowCamera] = useState(true);
   const [imageSource, setImageSource] = useState('');
+  useEffect(() => {
+    (async () => {
+      try {
+        const availableDevices = await Camera.getAvailableCameraDevices();
+        const backCamera = availableDevices.find(
+          device => device.type === 'back',
+        );
+        if (!backCamera) {
+          Alert.alert('Back camera not found');
+          throw new Error('Back camera not found');
+        }
+        setShowCamera(true); // Camera is available, show it
+      } catch (error) {
+        console.error('Camera error:', error);
+        // Handle error, e.g., display an error message
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     async function getPermission() {
@@ -62,37 +82,37 @@ function CameraPhoto() {
 
   return (
     <View style={styles.container}>
-      {/* {showCamera ? (
-        <> */}
-      <Camera
-        ref={camera}
-        style={StyleSheet.absoluteFill}
-        device={device}
-        isActive={showCamera}
-        photo={true}
-        video={true}
-        audio={true}
-      />
+      {showCamera ? (
+        <>
+          <Camera
+            ref={camera}
+            style={StyleSheet.absoluteFill}
+            device={device}
+            isActive={showCamera}
+            photo={true}
+            video={true}
+            audio={true}
+          />
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.camButton}
-          onPress={() => capturePhoto()}
-        />
-      </View>
-      {/* </> */}
-      {/* // ) : ( */}
-      {/* <> */}
-      {/* {imageSource !== '' ? (
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.camButton}
+              onPress={() => capturePhoto()}
+            />
+          </View>
+        </>
+      ) : (
+        <>
+          {imageSource !== '' ? (
             <Image
               style={styles.image}
               source={{
                 uri: `file://'${imageSource}`,
               }}
             />
-          ) : null} */}
+          ) : null}
 
-      {/* <View style={styles.backButton}>
+          <View style={styles.backButton}>
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgba(0,0,0,0.2)',
@@ -171,9 +191,9 @@ function CameraPhoto() {
                 <Text style={{color: 'red', fontWeight: '500'}}>Stop</Text>
               </TouchableOpacity>
             </View>
-          </View> */}
-      {/* </> */}
-      {/* )} */}
+          </View>
+        </>
+      )}
     </View>
   );
 }

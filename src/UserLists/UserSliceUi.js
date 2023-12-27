@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {
-  Alert,
-  Image,
+   Image,
   StyleSheet,
   Text,
   TouchableOpacity,

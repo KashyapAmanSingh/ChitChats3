@@ -1,13 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {
-  Alert,
-  Button,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import pickImage from './ChatUi/UploadFeat/ImageUpload';
 
@@ -18,7 +10,7 @@ const ProfileImageUploader = ({setProfileImageUrl, profileImageUrl}) => {
       setProfileImageUrl(url);
     }
   };
-   return (
+  return (
     <TouchableOpacity onPressOut={uploadImagehandler}>
       {profileImageUrl !== '' ? (
         <Image style={styles.ProfileImage} source={{uri: profileImageUrl}} />

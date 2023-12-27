@@ -10,13 +10,14 @@ const ShimmerUiUserList = () => {
     <>
       <View style={styles.ShimmerUiContainer}>
         <View style={styles.ShimmerUiCircle}>
-          <ShimmerPlaceholder 
+          <ShimmerPlaceholder
             style={{width: 60, height: 60, borderRadius: 50}}
             shimmerColors={['#5C7CFA80', '#474FB680', '#5C7CFA80']}
           />
         </View>
         <View style={styles.ShimmerUiCircle}>
-          <ShimmerPlaceholder  isReversed={true}
+          <ShimmerPlaceholder
+            isReversed={true}
             style={{width: 10, height: 10, borderRadius: 50}}
             shimmerColors={['#5C7CFA80', '#474FB680', '#5C7CFA80']}
           />
@@ -43,17 +44,10 @@ export const ShimmerUiButton = () => {
           />
         </View>
       </View>
-
-    
     </>
   );
 };
-{/* <View style={styles.ShimmerUiButton}>
-<ShimmerPlaceholder
-  style={{width: 250, height: 35, borderRadius: 15}}
-  shimmerColors={['#5C7CFA80', '#474FB680', '#5C7CFA80']}
-/>
-</View> */}
+
 export default ShimmerUiUserList;
 
 const styles = StyleSheet.create({
@@ -62,7 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     marginVertical: 10,
-     marginHorizontal: 25,
+    marginHorizontal: 25,
   },
   ShimmerUiCircle: {
     marginRight: 20,

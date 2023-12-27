@@ -16,7 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 const ChatUi = ({route}) => {
   const [receiverId, setReceiverId] = useState(null);
   const [senderId, setSenderId] = useState(null);
-  const [getmessage, getChatMessage] = useState([]);
+  const [getmessage, setChatMessage] = useState([]);
 
   const [ChatId, setChatId] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +46,7 @@ const ChatUi = ({route}) => {
 
   useEffect(() => {
     if (ChatId && ChatId.length >= 50) {
-      getMessagesRealTime(ChatId, getChatMessage);
+      getMessagesRealTime(ChatId, setChatMessage);
     }
   }, [ChatId]);
 

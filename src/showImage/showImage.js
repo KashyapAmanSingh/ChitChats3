@@ -4,8 +4,7 @@ import {Image, StyleSheet, View} from 'react-native';
 
 const ShowImage = ({route}) => {
   const imageUrl = route.params.url;
-  // Alert.alert(`Show ${imageUrl}`);
-  return (
+   return (
     <View>
       <Image
         resizeMode="contain"

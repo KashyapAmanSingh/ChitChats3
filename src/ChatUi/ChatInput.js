@@ -114,8 +114,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage, userProfile}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    paddingHorizontal: 0,
+     paddingHorizontal: 0,
     paddingVertical: 0,
     paddingTop: 15,
     backgroundColor: '#fff',

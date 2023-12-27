@@ -1,12 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Text,
- } from 'react-native';
+import {View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
 import {ReadCollections, signOut} from '../firebaseFns';
 import {getId} from '../AsyncStorageUtility/AsyncUtility';
 import UserSliceUi from './UserSliceUi';
@@ -19,7 +13,7 @@ const UserLists = props => {
   const [userList, setUserList] = useState([]);
   const [userIds, setUserIds] = useState([]);
   const [personalIds, setPersonalIds] = useState('');
-  const [loadingStatus, setLoadingStatus] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState(true);
 
   const navigation = useNavigation();
 
@@ -44,7 +38,7 @@ const UserLists = props => {
       setUserIds(userId);
       const UserId = await getId('UserId');
       setPersonalIds(UserId);
-      setLoadingStatus(true);
+      setLoadingStatus(false);
     };
 
     fetchUsers();
@@ -60,11 +54,10 @@ const UserLists = props => {
         {loadingStatus ? (
           <FlatList
             data={[1, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
-            keyExtractor={user => user.id}
-            renderItem={({item, index}) => <ShimmerUiUserList key={index} />}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item, index}) => <ShimmerUiUserList key={item} />}
           />
         ) : (
-          // Render your actual content here
           <FlatList
             data={userList}
             keyExtractor={user => user.id}
@@ -80,7 +73,7 @@ const UserLists = props => {
         )}
       </View>
       {loadingStatus ? (
-        <ShimmerUiButton />
+        <ShimmerUiButton key={1} />
       ) : (
         <TouchableOpacity style={styles.button} onPress={SignOuthandler}>
           <Text style={[styles.buttonText, styles.SignInFormText]}>
