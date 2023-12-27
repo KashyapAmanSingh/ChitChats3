@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {
-  useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -114,7 +113,7 @@ const ChatInput = ({senderId, receiverId, ChatId, getmessage, userProfile}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-     paddingHorizontal: 0,
+    paddingHorizontal: 0,
     paddingVertical: 0,
     paddingTop: 15,
     backgroundColor: '#fff',

@@ -19,8 +19,7 @@ const ChatUi = ({route}) => {
   const [getmessage, setChatMessage] = useState([]);
 
   const [ChatId, setChatId] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-
+ 
   const userPhone = route.params.userPhone;
   const userName = route.params.userName;
   const userStatus = route.params.userStatus;

@@ -189,7 +189,7 @@ const FileViewer = ({
 
 const styles = StyleSheet.create({
   chatDay: {
-    color: 'red',
+    color: '#5C7CFA',
     height: 25,
     width: '100%',
     fontWeight: 'bold',
