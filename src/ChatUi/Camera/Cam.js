@@ -7,8 +7,6 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Text,
-  Image,
   ActivityIndicator,
   Linking,
 } from 'react-native';
@@ -31,7 +29,7 @@ function CameraPhoto() {
         await Camera.getCameraPermissionStatus();
       const microphonePermissionStatus =
         await Camera.getMicrophonePermissionStatus();
-     
+
       if (permissionCamera === 'denied') await Linking.openSettings();
     }
     getPermission();
@@ -64,37 +62,37 @@ function CameraPhoto() {
 
   return (
     <View style={styles.container}>
-      {showCamera ? (
-        <>
-          <Camera
-            ref={camera}
-            style={StyleSheet.absoluteFill}
-            device={device}
-            isActive={showCamera}
-            photo={true}
-            video={true}
-            audio={true}
-          />
+      {/* {showCamera ? (
+        <> */}
+      <Camera
+        ref={camera}
+        style={StyleSheet.absoluteFill}
+        device={device}
+        isActive={showCamera}
+        photo={true}
+        video={true}
+        audio={true}
+      />
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.camButton}
-              onPress={() => capturePhoto()}
-            />
-          </View>
-        </>
-      ) : (
-        <>
-          {imageSource !== '' ? (
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.camButton}
+          onPress={() => capturePhoto()}
+        />
+      </View>
+      {/* </> */}
+      {/* // ) : ( */}
+      {/* <> */}
+      {/* {imageSource !== '' ? (
             <Image
               style={styles.image}
               source={{
                 uri: `file://'${imageSource}`,
               }}
             />
-          ) : null}
+          ) : null} */}
 
-          <View style={styles.backButton}>
+      {/* <View style={styles.backButton}>
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgba(0,0,0,0.2)',
@@ -173,9 +171,9 @@ function CameraPhoto() {
                 <Text style={{color: 'red', fontWeight: '500'}}>Stop</Text>
               </TouchableOpacity>
             </View>
-          </View>
-        </>
-      )}
+          </View> */}
+      {/* </> */}
+      {/* )} */}
     </View>
   );
 }

@@ -5,7 +5,7 @@ import MediaMsgComponent from './MediaMsgComponent/MediaMsgComponent';
 import {messageCreationTimeStamps} from './MediaMsgComponent/TimeUtility/TimeUtility';
 import Image from 'react-native-image-progress';
 import ProgressCircle from 'react-native-progress/Circle';
- import {useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 const FileViewer = ({
   item,
   senderId,
@@ -30,7 +30,6 @@ const FileViewer = ({
     setMessageIdFileViewer(id);
   };
 
- 
   const handleImageDetails = url => {
     navigation.navigate('ShowImage', {
       url: url,
@@ -46,49 +45,64 @@ const FileViewer = ({
       switch (item.fileType) {
         case 'Text':
           return (
-            <Text
-              selectable={true}
-              onLongPress={() => handleEdit(item.ChatId, item.message)}
-              style={[
-                messageedit && messageIdFileViewer === item.ChatId
-                  ? styles.chatEdit
-                  : null,
-                styles.ChatMessage,
-                params && styles[params],
-              ]}>
-              {item.message}
-              {'\n'}
-              <Text style={[styles.formattedTimeCss]}>{formattedTime}</Text>
-              {/* {`Day: ${day}, Time: ${formattedTime}, Date: ${formattedDate}`} */}
-            </Text>
+            <>
+              <Text style={styles.chatDay}>
+                {day !== '' ? day : formattedDate}
+              </Text>
+
+              <Text
+                selectable={true}
+                onLongPress={() => handleEdit(item.ChatId, item.message)}
+                style={[
+                  messageedit && messageIdFileViewer === item.ChatId
+                    ? styles.chatEdit
+                    : null,
+                  styles.ChatMessage,
+                  params && styles[params],
+                ]}>
+                {item.message}
+                {'\n'}
+                <Text style={[styles.formattedTimeCss]}>{formattedTime}</Text>
+              </Text>
+            </>
           );
 
         case 'image':
           return (
-            <TouchableOpacity
-              style={[styles.ChatMessageSender]}
-              onPress={() => handleImageDetails(item.message)}
-              onLongPress={() => handleEdit(item.ChatId, item.message)}>
-              <Image
-                indicator={ProgressCircle}
-                source={{uri: item.message}}
-                style={[styles.ChatImages]}
-                indicatorProps={{
-                  size: 60,
-                  borderWidth: 1,
-                  color: '#474FB6',
-                  unfilledColor: 'white',
-                  thickness: 4,
-                  borderColor: '#474FB6',
-                }}
-              />
+            <>
+              <Text style={styles.chatDay}>
+                {day !== '' ? day : formattedDate}
+              </Text>
 
-              <Text style={[styles.formattedTimeCss]}>{formattedTime}</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.ChatMessageSender]}
+                onPress={() => handleImageDetails(item.message)}
+                onLongPress={() => handleEdit(item.ChatId, item.message)}>
+                <Image
+                  indicator={ProgressCircle}
+                  source={{uri: item.message}}
+                  style={[styles.ChatImages]}
+                  indicatorProps={{
+                    size: 60,
+                    borderWidth: 1,
+                    color: '#474FB6',
+                    unfilledColor: 'white',
+                    thickness: 4,
+                    borderColor: '#474FB6',
+                  }}
+                />
+
+                <Text style={[styles.formattedTimeCss]}>{formattedTime}</Text>
+              </TouchableOpacity>
+            </>
           );
         case 'audio':
           return (
             <>
+              <Text style={styles.chatDay}>
+                {day !== '' ? day : formattedDate}
+              </Text>
+
               <MediaMsgComponent
                 item={item}
                 senderId={senderId}
@@ -108,6 +122,10 @@ const FileViewer = ({
         case 'video':
           return (
             <>
+              <Text style={styles.chatDay}>
+                {day !== '' ? day : formattedDate}
+              </Text>
+
               <MediaMsgComponent
                 item={item}
                 setMessageditStatus={setMessageditStatus}
@@ -170,6 +188,15 @@ const FileViewer = ({
 };
 
 const styles = StyleSheet.create({
+  chatDay: {
+    color: 'red',
+    height: 25,
+    width: '100%',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
   formattedTimeCss: {
     fontSize: 11,
     width: '100%',
@@ -234,10 +261,10 @@ const styles = StyleSheet.create({
   ChatImages: {
     width: 220,
     height: 250,
-
     borderWidth: 2,
     borderColor: '#474FB6',
-    borderRadius: 15,
+    borderRadius: 0,
+    marginVertical: 10,
   },
 });
 export default FileViewer;

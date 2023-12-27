@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, {
+  useState} from 'react';
 import {
   View,
   Text,
@@ -201,6 +202,8 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     marginRight: 8,
     width: '60%',
+    color: 'black',
+    fontWeight: 'bold',
   },
   SendItemsIcon: {
     backgroundColor: 'white',

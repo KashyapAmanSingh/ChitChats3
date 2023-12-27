@@ -3,7 +3,7 @@
  * @format
  */
 
-import {  AppRegistry} from 'react-native';
+import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import messaging from '@react-native-firebase/messaging';
@@ -13,8 +13,8 @@ import * as ZIM from 'zego-zim-react-native';
 import * as ZPNs from 'zego-zpns-react-native';
 import notifee, {EventType} from '@notifee/react-native';
 import {DisplayNotification} from './src/firebaseFns';
- // import {PermissionsAndroid} from 'react-native';
-// PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+import ShimmerUiUserList from './src/ShimmerUi/ShimmerUi';
+ 
 ZegoUIKitPrebuiltCallService.useSystemCallingUI([ZIM, ZPNs]);
 
 notifee.onBackgroundEvent(async ({type, detail}) => {
